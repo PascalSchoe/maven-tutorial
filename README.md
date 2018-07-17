@@ -3,12 +3,12 @@
 - starke Unterscheidung zw. Maven2 & Maven3
 -
 ## Project Object Model (POM)
-EnthÃ¤lt alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche AbhÃ¤ngingkeiten es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermÃ¶glicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb des Lebenszykluses gebunden sind.
+Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche Abhägingkeiten es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb des Lebenszykluses gebunden sind.
 
 Das POM sollte folgenden
 - Dateienname muss, sofern nicht anders definiert im *settings.xml*, "pom.xml"
 - Syntax dieses Files *XML*
-- `modelVersion` -> derzeitig nur 4.0.0 unterstÃ¼tzt
+- `modelVersion` -> derzeitig nur 4.0.0 unterstützt
 ### Koordinaten
 #### `<groupId></groupId>`
 Meist in Form einer 'umgekehrten URL' + Namensraum.
@@ -39,28 +39,28 @@ Folgende Werte sind verfÃ¼gbar:
 |*maven-plugin* |Packaging-Type um eigene Maven-Plugins zuschreiben.|
 |*ear* |Erzeugt ein Java-Enterprise-Archive.|
 |*ejb* |Deploy-fÃ¤higes Java-Archive.|
-|*rar* |Resource Adapter Archive. Liefert INformationen, mit denen eine Java-Applikation sich mit einem Enterprise-Information-System verbinden kann.|
+|*rar* |Resource Adapter Archive. Liefert Informationen, mit denen eine Java-Applikation sich mit einem Enterprise-Information-System verbinden kann.|
 
 Es gibt weitere Werte fÃ¼r `<packaging></packaging>`, die jedoch recht selten Verwendung finden.
 
 #### `<distributionManagement></distributionManagement>`
-FÃ¼r das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *wie* das Projekt deployt wird. So gibt es verschiedene Elemente:
+Für das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *wie* das Projekt deployt wird. So gibt es verschiedene Elemente:
 
 - `repository`: Deployment von **Releases**   
 - `snapshotRepository`: Deployment von **SNAPSHOT-Versionen** ([siehe Versionen](#versionversion))
-- `site`: Definiert die Addresse fÃ¼r das Deployment der von Maven genierten **Dokumentation**.
+- `site`: Definiert die Addresse für das Deployment der von Maven genierten **Dokumentation**.
 
- Jedes der beschriebenen Elemente des *distributionManagement* benÃ¶tigt folgende Attribute:
+ Jedes der beschriebenen Elemente des *distributionManagement* benötigt folgende Attribute:
 
  - **id**: Identifiziert das Repository eindeutig unter mehreren.
  - **name**: FÃ¼r Menschen lesbare Form der *id*.
  - **url** : Definiert die Adresse und das zu verwendene Protokoll um das Artefatkt zu transferieren.
 
 ### Super POM ([offiziell](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html))
-Vergleichbar mit `Object` in Java erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse Default-Werte. Es stellt sicher dass auch bei einem [Minimalem POM](#minimales-pom) die Funktionsweise *Mavens* gewÃ¤hrleistet wird.
+Vergleichbar mit `Object` in Java erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse Default-Werte. Es stellt sicher dass auch bei einem [Minimalem POM](#minimales-pom) die Funktionsweise *Mavens* gewährleistet wird.
 
 ### Minimales Pom
-Das Minimum, das Maven benÃ¶tigt, sind die [Koordinaten](#koordinaten) des Projekts, die es mÃ¶glich machen euer Projekt eindeutig zu referenzieren.
+Das Minimum, das Maven benÃ¶tigt, sind die [Koordinaten](#koordinaten) des Projekts, die es möglich machen euer Projekt eindeutig zu referenzieren.
 
 ```
 <project>
@@ -73,7 +73,7 @@ Das Minimum, das Maven benÃ¶tigt, sind die [Koordinaten](#koordinaten) des Proje
 
 
 
-# Notizen fÃ¼r mich
+# Notizen für mich
 - eventuell vergleich zu *Ant* herstellen?
 - was gibt es an Konkurrenz/Synergien?
 - Classifier?
@@ -88,7 +88,7 @@ Das Minimum, das Maven benÃ¶tigt, sind die [Koordinaten](#koordinaten) des Proje
 - Installation
 
 ## Aufgaben
-- Profile fÃ¼r development & production(S.153 !)
+- Profile für development & production(S.153 !)
 
 ## Lebenszyklen
 Ein Grundprinzip Mavens sind die Lebenszyklen in Verbindung mit [Plugins](#plugins).
@@ -100,7 +100,7 @@ Maven kennt drei Standard-Lebenszyklen:
 - Clean
 - Site
 
-FÃ¼r jede Teilaufgabe gibt es genau **ein** Maven-Plugin, welches die Abarbeitung vornimmt. Wenn ein Plugin mehrere Varianten einer FunktionalitÃ¤t bereitstellt muss zusÃ¤tzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile`.
+Für jede Teilaufgabe gibt es genau **ein** Maven-Plugin, welches die Abarbeitung vornimmt. Wenn ein Plugin mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile`.
 
 > Kurz gesagt: **_Lebenszyklen_ bestehen aus _Phasen_, diese werden von _Plugins_, die wiederum verschiedene _Goals_ haben, realisiert.**
 
@@ -112,24 +112,24 @@ Nachfolgend eine Lister der Grundlegenden Phasen des Default-Lifecycle:
 
 | Phase | Funktion |
 | --- | --- |
-| `validate` | ÃœberprÃ¼ft die GÃ¼ltigkeit der Projektkonfiguration und das [POM](#project-object-model-(pom)). |
-| `compile` | Ãœbersetzt den Quellcode des Projektes in das Zielverzeichniss. |
-| `test` | FÃ¼hrt die verfÃ¼gbaren Unit-Test unter Verwendung des passenden Frameworks aus, zum Beispiel _JUnit_. |
+| `validate` | Überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-(pom)). |
+| `compile` | Übersetzt den Quellcode des Projektes in das Zielverzeichniss. |
+| `test` | Führt die verfügbaren Unit-Test unter Verwendung des passenden Frameworks aus, zum Beispiel _JUnit_. |
 | `package` |  Erzeugt ein Java-Archiv, je nach gewÃ¤hltem [packaging-typ](#packagingpackaging). |
-| `verify` |  ÃœberprÃ¼ft das erzeugte Archiv und stellt fest, ob es im Maven-Repository abgelegt werden darf. |
+| `verify` |  Überprüft das erzeugte Archiv und stellt fest, ob es im Maven-Repository abgelegt werden darf. |
 | `install` |  Legt das erzeugte Archiv im lokalen Maven-Repository ab. |
 | `deploy` |  Legt das erzeugte Archiv im remote Maven-Repository, welches dies ist wird mit dem [distributionManagement-Attribut](#distributionmanagementdistributionmanagement) festgelegt). |
 
-Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische Phase ausgefÃ¼hrt, wie zb `install`, so werden alle in der Reihenfolge, des Lebenszykluses, liegenden Phasen ebenfalls ausgefÃ¼hrt.
+Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische Phase ausgeführt, wie zb `install`, so werden alle in der Reihenfolge, des Lebenszykluses, liegenden Phasen ebenfalls ausgeführt.
 
 Beispiel  
 ### Clean Lebenszyklus
-Beinhaltet alle Phansen die beim 'aufrÃ¤umen' eines Projektes notwendig sind. Die von Maven erzeugten Dateien und Ordner unter dem Verzeichnis `target` werden entfernt.
+Beinhaltet alle Phansen die beim 'aufräumen' eines Projektes notwendig sind. Die von Maven erzeugten Dateien und Ordner unter dem Verzeichnis `target` werden entfernt.
 
 | Phase | Funktion |
 | --- | --- |
-| `pre-clean` | Vorbereitungen fÃ¼r die *clean*-Phase. |
-| `clean` | RÃ¤umt das Projekt auf und entfernt die vom letzten Build erzeugten Dateien und Ordner. |
+| `pre-clean` | Vorbereitungen für die *clean*-Phase. |
+| `clean` | Räumt das Projekt auf und entfernt die vom letzten Build erzeugten Dateien und Ordner. |
 | `post-clean` | Abschlussphase des Clean-Lifecycle. |
 
 ### Site Lebenszyklus
@@ -137,14 +137,14 @@ In diesem Lebenszyklus wird die von Maven erzeugte Projektdokumentation erzeugt.
 
 | Phase | Funktion |
 | --- | --- |
-| `pre-site` | Vorbereitungen fÃ¼r das Erzeugen der Projektdokumentation. |
+| `pre-site` | Vorbereitungen für das Erzeugen der Projektdokumentation. |
 | `site` | Erzeugt die Projektdokumentation als *HTML* durch die AusfÃ¼hrung aller unter `reporting` konfigurierten [Reporting-Plugins](#reporting). |
 
 
 ## Plugins
 
 ## Profile
-Um, aufbauend auf der PlattformunabhÃ¤ngigkeit Java's, Portierbarkeit und das Arbeiten in verschiedenen Umgebungen zu gewÃ¤hrleisten bietet sich die Verwendung von Profilen an. So ist es zum Beispiel mÃ¶glich das Projekt nach *Development* und *Production* durch Profile zu unterscheiden und somit auch verschiedene Datenbanken oder Appserver zuverwenden.
+Um, aufbauend auf der PlattformunabhÃ¤ngigkeit Java's, Portierbarkeit und das Arbeiten in verschiedenen Umgebungen zu gewährleisten bietet sich die Verwendung von Profilen an. So ist es zum Beispiel möglich das Projekt nach *Development* und *Production* durch Profile zu unterscheiden und somit auch verschiedene Datenbanken oder Appserver zuverwenden.
 
 **Namenskonvention**
 Sollte ein Profil durch eine Variable und dem entsprechenden Wert aktiviert werden so ist folgender Name von Vorteil:
@@ -152,7 +152,7 @@ Sollte ein Profil durch eine Variable und dem entsprechenden Wert aktiviert werd
 So ist bei folgendem Aufruf: `mvn -Denv=test install` klar dass, sofern vorhanden, das Profil mit dem Namen: 'env-test' aktiv sein wird.
 
 ### Definition eines Profiles
-Maven Profile kÃ¶nnen an verschieden Stellen definiert werden:
+Maven Profile können an verschieden Stellen definiert werden:
 
 - Pro Projekt: [pom.xml](#project-object-model-(pom))
 - [settings.xml](#settings)
@@ -160,9 +160,9 @@ Maven Profile kÃ¶nnen an verschieden Stellen definiert werden:
   - Pro User: `${maven.home}/conf/settings.xml`
 - in Maven2 zusÃ¤tzlich in *profiles.xml*, in Maven3 nicht mehr!
 
-Je nach Profilart lassen sich verschiedene Elemente manipulieren. AuÃŸerdem unterliegen sie verschiedenen PrioritÃ¤ten bei Gleichnamigkeit. Diese Merkmale sollen in folgender Tabelle verdeutlicht werden.
+Je nach Profilart lassen sich verschiedene Elemente manipulieren. Außerdem unterliegen sie verschiedenen Prioritäten bei Gleichnamigkeit. Diese Merkmale sollen in folgender Tabelle verdeutlicht werden.
 
-| Profilart | PrioritÃ¤t | Elemente |
+| Profilart | Priorität | Elemente |
 |--- | --- | --- |
 | settings.xml -> Global | 1 | `repositories`<br/>`pluginRepositories`<br/>`properties`<br/> |
 | settings.xml -> Pro User | 2 | `repositories`<br/>`pluginRepositories`<br/>`properties`<br/> |
@@ -170,7 +170,7 @@ Je nach Profilart lassen sich verschiedene Elemente manipulieren. AuÃŸerdem unte
 | pom.xml | 4 | `build`<br/>`dependencies`<br/>`dependencyManagement`<br/>`distributionManagement`<br/>`pluginRepositories`<br/>`modules`<br/>`plugins`<br/>`properties`<br/>`reporting`<br/>`repositories`<br/>`reporting` |
 
 ### Aktivierung eines Profiles
-Die Aktivierung eines Profiles kann auf verschiende Wege geschehen, diese MÃ¶glichkeiten werden im Folgenden Sektionen beschrieben. Um festzustellen welche Profile derzeitig aktiv sind kann der Kommandozeilenaufruf: `mvn help:active-profiles` verwendet werden.
+Die Aktivierung eines Profiles kann auf verschiende Wege geschehen, diese Möglichkeiten werden im Folgenden Sektionen beschrieben. Um festzustellen welche Profile derzeitig aktiv sind kann der Kommandozeilenaufruf: `mvn help:active-profiles` verwendet werden.
 
 #### CLI
 Durch Aufruf eines Profiles via Kommandozeile zb.: `mvn -P profile-1,profile-2`
@@ -187,10 +187,10 @@ Beispiel:
 </settings>
 ```
 
-Hier ist es mÃ¶glich mehrere `activeProfile`-Elemente anzugeben.
+Hier ist es möglich mehrere `activeProfile`-Elemente anzugeben.
 
 #### Build-Umgebung
-Profile kÃ¶nnen automatisch aktiviert werden je nach Zustand der Build-Umgebung, so werden bei Definition des Profiles gewisse *Trigger* in Form des `activation`-Elements Ã¼bergeben. Um zu testen ob die Umgebung einer gewissen Kriterium genÃ¼gt wird *prefix-matching* verwendet. So kann beispielsweise auf die *jdk*-Version getestet werden:
+Profile können automatisch aktiviert werden je nach Zustand der Build-Umgebung, so werden bei Definition des Profiles gewisse *Trigger* in Form des `activation`-Elements Übergeben. Um zu testen ob die Umgebung einer gewissen Kriterium genügt wird *prefix-matching* verwendet. So kann beispielsweise auf die *jdk*-Version getestet werden:
 
 ```xml
 <profiles>
@@ -204,10 +204,10 @@ Profile kÃ¶nnen automatisch aktiviert werden je nach Zustand der Build-Umgebung,
 </profiles>
 ```
 
-Das beschriebene Profil wÃ¼rde ebenfalls *triggern* bei den Versionen: 1.4.0_08, 1.4.13.37 oder der Gleichen, da wie schon beschrieben *prefix-matching* betrieben wird.
-Bei der Erkennung ist es auÃŸerdem  mÃ¶glich *Ranges* von Versionen anzugeben zb.: `<jdk>[1.3,1.6)</jdk>`, hier werden [Version Ranges](https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html) genutzt.
+Das beschriebene Profil würde ebenfalls *triggern* bei den Versionen: 1.4.0_08, 1.4.13.37 oder der Gleichen, da wie schon beschrieben *prefix-matching* betrieben wird.
+Bei der Erkennung ist es außerdem  möglich *Ranges* von Versionen anzugeben zb.: `<jdk>[1.3,1.6)</jdk>`, hier werden [Version Ranges](https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html) genutzt.
 
-Ebenfalls ist es mÃ¶glich auf das Betriebssystem zu testen:
+Ebenfalls ist es möglich auf das Betriebssystem zu testen:
 
 ```xml
 <profiles>
@@ -227,7 +227,7 @@ Ebenfalls ist es mÃ¶glich auf das Betriebssystem zu testen:
 ```
 mehr Informationen zu Betriebssystemen bezÃ¼glich Maven findest du [hier](https://maven.apache.org/enforcer/enforcer-rules/requireOS.html).
 
-Zu guter letzt gibt es noch die MÃ¶glichkeit die Aktivierung eines Profiles abhÃ¤ngig von den an Maven Ã¼bergebenen Parametern zu machen, so wÃ¼rde das untere Profil bei dem Kommandozeilenaufruf:
+Zu guter letzt gibt es noch die Möglichkeit die Aktivierung eines Profiles abhängig von den an Maven Übergebenen Parametern zu machen, so würde das untere Profil bei dem Kommandozeilenaufruf:
 `mvn org.company.kitchenware:blender:blend -Denv=production` aktiviert werden.
 ```xml
 <profiles>
@@ -271,7 +271,7 @@ Es kann getestet werden ob eine Datei vorhanden ist oder nicht und entsprechend 
 ```
 
 #### Default
-Auch mÃ¶glich ist es ein Profil standardmÃ¤ÃŸig zu (de-)aktivieren:
+Auch möglich ist es ein Profil standardmäßig zu (de-)aktivieren:
 
 ```xml
 <profiles>
@@ -286,12 +286,12 @@ Auch mÃ¶glich ist es ein Profil standardmÃ¤ÃŸig zu (de-)aktivieren:
 ```
 
 #### Deaktivieren
-Profile kÃ¶nnen Ã¼ber die Kommandozeile mittels `mvn -P !profile-1, !profile-2` deaktiviert werden. Dies betrifft sowohl Profile die Ã¼ber *activeByDefault* oder ihrer Konfiguration andernfalls aktiv wÃ¤ren.
+Profile können über die Kommandozeile mittels `mvn -P !profile-1, !profile-2` deaktiviert werden. Dies betrifft sowohl Profile die über *activeByDefault* oder ihrer Konfiguration andernfalls aktiv wären.
 
 Alternativ zu dem Symbol '**!**' kann auch '**-**' als Prefix verwendet werden um eine Deaktivierung zu kennzeichnen.
 
 ### Variablen
-Werden in der Form `${nameDerVariable}` abgefragt. *Properties* kÃ¶nnen werden entweder vom System selbst geliefert oder selbst definiert. Die Folgende Tabelle zeigt die verschiedenen Arten von Variablen die Maven kennt und in welcher Form diese abzurufen sind.
+Werden in der Form `${nameDerVariable}` abgefragt. *Properties* können werden entweder vom System selbst geliefert oder selbst definiert. Die Folgende Tabelle zeigt die verschiedenen Arten von Variablen die Maven kennt und in welcher Form diese abzurufen sind.
 
 | Art | Herkunft | Form  | Beispiel |
 | --- | --- | --- | --- |
@@ -301,12 +301,12 @@ Werden in der Form `${nameDerVariable}` abgefragt. *Properties* kÃ¶nnen werden e
 | Settingswerte | [settings.xml](#maven-settings) | *settings.x* | ${settings.localRepository} |
 | Property | [Properties-Element](#propertiesproperties) / Kommandozeilenparamter | *x*  | ${blender.rotationPerMinute} |
 
-Eine Auflistung aller *Umgebungsvariablen* und *Systemproperties* die zur VerfÃ¼gung stehen lassen sich mittels Kommandozeilenaufruf `mvn help:system` in Erfahrung bringen.
+Eine Auflistung aller *Umgebungsvariablen* und *Systemproperties* die zur Verfügung stehen lassen sich mittels Kommandozeilenaufruf `mvn help:system` in Erfahrung bringen.
 
 #### Filtering
-Dateien, die sich in Ressourcen-Verzeichnissen befinden, kÃ¶nnen Variablen enthalten die anschlieÃŸend wÃ¤hrend der process-resources-[phase](#lebenszyklen) durch den entsprechenden Wert ersetzt werden. Dieser Prozess wird *Filtering* genannt.
-DurchgefÃ¼hrt wird das Filtering durch das *Resource-Plugin*, default ist es jedoch deaktiviert.
-MÃ¶chte man nun das Filtering nutzen so muss man dies im POM explizit angeben:
+Dateien, die sich in Ressourcen-Verzeichnissen befinden, können Variablen enthalten die anschließend während der process-resources-[phase](#lebenszyklen) durch den entsprechenden Wert ersetzt werden. Dieser Prozess wird *Filtering* genannt.
+Durchgeführt wird das Filtering durch das *Resource-Plugin*, default ist es jedoch deaktiviert.
+Möchte man nun das Filtering nutzen so muss man dies im POM explizit angeben:
 
 ```xml
 <build>
@@ -319,7 +319,7 @@ MÃ¶chte man nun das Filtering nutzen so muss man dies im POM explizit angeben:
 </build>
 ```
 
-Desweiteren ist es mÃ¶glich eigene *Filter* anzulegen. Folgendes Beispiel soll die Anwendung illustrieren:
+Desweiteren ist es möglich eigene *Filter* anzulegen. Folgendes Beispiel soll die Anwendung illustrieren:
 
 **pom.xml**
 ```xml
@@ -346,7 +346,7 @@ blender.rotationPerMinute=9001
 
 **blender.properties**
 ```
-## Properties fÃ¼r ${name}
+## Properties für ${name}
 # Koordinaten : ${groupId}:${artifactId}:${version}
 # Archivtyp   : ${packaging}
 # Archivname  : ${project.build.finalName}.${packaging}
@@ -358,7 +358,7 @@ model=${blender.model}
 rotationPerMinute=${blender.rotationPerMinute}
 ```
 
-Hier ersichtlich ist das *Filterdateien* eine weitere MÃ¶glichkeit bieten *Properties* zu deklarieren. Besonders vorsichtig mÃ¼sst ihr sein wenn sich  BinÃ¤rdateien in euren Ressourcen-Verzeichnissen befinden, diese kÃ¶nnten zusammen mit dem *Filtering* zu unerwÃ¼nschten Ergebnissen fÃ¼hren. Um diese Problem zu umgeben sind **excludes** notwendig. Ein komplexeres Beispiel hierfÃ¼r:
+Hier ersichtlich ist das *Filterdateien* eine weitere Möglichkeit bieten *Properties* zu deklarieren. Besonders vorsichtig müsst ihr sein wenn sich  Binärdateien in euren Ressourcen-Verzeichnissen befinden, diese könnten zusammen mit dem *Filtering* zu unerwünschten Ergebnissen führen. Um diese Problem zu umgeben sind **excludes** notwendig. Ein komplexeres Beispiel hierfür:
 
 **pom.xml**
 ```xml
@@ -409,7 +409,7 @@ anschlieÃŸend muss nur noch das *filtering* auf erstererem aktiviert werden:
 ```
 
 ## Reporting
-Maven erzeugt mit dem [Clean-Lifecycle](#clean-lifecycle) eine Website fÃ¼r das Projekt.
+Maven erzeugt mit dem [Clean-Lifecycle](#clean-lifecycle) eine Website für das Projekt.
 Die Bestandteile sind: Projektinformationen, Projektreports und Projektdokumentation.
 
 
@@ -418,7 +418,7 @@ Direkt aus dem POM generiert. [Hier](https://maven.apache.org/plugins/maven-site
 
 ### Projektreports
 Werden durch Plugins aus dem Sourcecode oder anderen Projektbestandteilen generiert.
-Maven erzeugt nur *Reports* wenn im POM in der Sektion `reporting` das entsprechende Plugin aufgefÃ¼hrt ist.
+Maven erzeugt nur *Reports* wenn im POM in der Sektion `reporting` das entsprechende Plugin aufgeführt ist.
 Nachfolgend wird beispielhaft die Verwendung des Javadoc Plugins beschrieben, die anderen [anderen Reports](https://maven.apache.org/plugins/maven-site-plugin/project-reports.html) die Maven erzeugt werden nahezu analog verwendet.
 
 **pom.xml**
@@ -446,9 +446,9 @@ Nachfolgend wird beispielhaft die Verwendung des Javadoc Plugins beschrieben, di
 </reporting>
 ```
 
-AnschlieÃŸend mit dem Befehl `mvn site` die Website generiert. Unter `target/site/index.html` findet ihr die *Javadoc*.
+Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target/site/index.html` findet ihr die *Javadoc*.
 
-UrsprÃ¼nglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, anstatt im `reporting`-Element, anzugeben dies wurde jedoch vorerst rÃ¼ckgÃ¤ngig gemacht, ich weiÃŸ nicht ob sich dies zukÃ¼nfigt Ã¤ndern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
+Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, anstatt im `reporting`-Element, anzugeben dies wurde jedoch vorerst rückgängig gemacht, ich weiß nicht ob sich dies zukünfigt ändern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
 
 
 #### Eigene Reports
