@@ -10,6 +10,8 @@
   
   <modules>
   	<module>plugins</module>
+  	<module>tester</module>
+  	<module>reporting</module>
   </modules>
   
   
