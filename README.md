@@ -85,8 +85,9 @@ Legt fest **wo** Maven nach Plugins und Dependencies suchen soll. Hier eine Beis
 </repositories>
 ```
 
-Die `updatePolicy` always bewirkt das wirklich bei **jedem** Build nach einer neueren Version im remote Repository gesucht wird. Default wird einmal pro Tag nach einer neueren *SNAPSHOT-Version* gesucht.
+Die `updatePolicy` 'always' bewirkt das wirklich bei **jedem** Build nach einer neueren Version im remote Repository gesucht wird. Default wird einmal pro Tag nach einer neueren *SNAPSHOT-Version* gesucht.
 
+*Repositories* können im *pom.xml* (evtl. sogar Super-POM) oder/und in der *settings.xml* definiert werden.
  
 ### Super POM ([offiziell](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html))
 Vergleichbar mit `Object` in Java erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse Default-Werte. Es stellt sicher dass auch bei einem [Minimalem POM](#minimales-pom) die Funktionsweise *Mavens* gewährleistet wird.
@@ -119,6 +120,9 @@ Das Minimum, das Maven benötigt, sind die [Koordinaten](#koordinaten) des Proje
 - 4.4 Buch
 - alle phasen link
 - Installation
+- Eventuell ein zusammenhängendes Projekt statt vieler kleiner Bausteine ?
+- Einheitliches Konzept für Dokumentation
+- Links anpassen
 
 ## Aufgaben
 - Profile für development & production(S.153 !)
@@ -267,9 +271,15 @@ Plugins können pro `execution` oder auch für das gesamte konfiguriert werden.
 ### pluginManagement
 Hier sollten Plugins deklariert werden die nicht mit einer spezifischen *Phase* verknüpft sind. Außerdem ist zu erwähnen das Plugins die hier definiert sind nicht ohne weiteres in erbenden Projekten sichtbar sind. 
 
-### Verhalten bei Updates
 ### Plugins selber schreiben
-Ein Maven Plugin sind jar-Archiv, das ein oder mehrere Java-Klassen enthält. Diese Klassen werden Mojos genannt, das steht für Maven old Java Objects, in Anspielung an Pojos(
+Ein Maven Plugin ist ein *jar-Archiv*, das ein oder mehrere Java-Klassen enthält. Diese Klassen werden *Mojos* genannt, das steht für 'Maven plain old Java Object', in Anspielung an Pojos(Plain old Java Object). Jedes *Mojo* stellt ein *Goal* für das jeweilige Plugin dar.
+
+[Hier](custom-plugins/) findest du ein Beispiel für ein selbst geschriebenes Plugin, dieses wird in das [tester-projekt](tester/pom.xml) eingebunden und kann mit
+```console
+$ cd tester
+$ mvn friendly:say-something
+```
+aufgerufen werden. 
 
 ## Profile
 Um, aufbauend auf der Plattformunabhängigkeit Java's, Portierbarkeit und das Arbeiten in verschiedenen Umgebungen zu gewährleisten bietet sich die Verwendung von Profilen an. So ist es zum Beispiel möglich das Projekt nach *Development* und *Production* durch Profile zu unterscheiden und somit auch verschiedene Datenbanken oder Appserver zuverwenden.
