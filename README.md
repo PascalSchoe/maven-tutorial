@@ -22,6 +22,13 @@ Beispiel: **blender**
 Versionierung wird in der Form: *major.minor.revision* bevorzugt, es wird jedoch keine feste Form  verlangt.
 Beispiel: **1.0-SNAPSHOT**
 
+Folgendes Szenario wir deklarieren im POM dass wir ein Plugin XY-maven-plugin nutzen wollen. Nun gibt es drei Arten die Version eben dieses Plugins anzugeben:
+
+1. Keine Version angeben.Achtung! In diesem Fall verwendet Maven die aktuellste Version des Plugins **aus dem lokalen Repository**, nur falls es keinen Eintrag im lokalem Repository gibt wird vom remote Repository geladen.
+2. Release Version, zum Beispiel: `<version>1.0</version>`, Maven verwendet die Release Version 1.0 des Plugins. Es wird zu erst im lokalem Repository gesucht und anschließend wenn nicht gefunden, wird im remote Repository gesucht.
+3. Snapshot Version, zum Beispiel: `<version>1.0-SNAPSHOT</version>`, Maven sucht je nach konfiguriertem Intervall([`updatePolicy`](#repositories)) im remote Repository nach neueren Versionen. Der 'SNAPSHOT'-Anteil der Version wird von Maven mit einem Zeitstempel ersetzt.
+
+
 #### `<properties></properties>`
 [TODO]-> ausfüllen....
 
@@ -56,6 +63,31 @@ Für das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *
  - **name**: Für Menschen lesbare Form der *id*.
  - **url** : Definiert die Adresse und das zu verwendene Protokoll um das Artefatkt zu transferieren.
 
+
+### Repositories
+Legt fest **wo** Maven nach Plugins und Dependencies suchen soll. Hier eine Beispiel Konfiguration:
+
+```xml
+<repositories>
+	<repository>
+		<id>snapshots</id>
+		<url>http://maven.kitchenware.com/snapshot</url>
+		<snapshots>
+			<enabled>true</enabled>	
+			<updatePolicy>always</updatePolicy>
+		</snapshots>	
+	</repository>
+
+	<repository>
+		<id>release</id>
+		<url>http://maven.kitchenware.org/release</url>
+	</repository>
+</repositories>
+```
+
+Die `updatePolicy` always bewirkt das wirklich bei **jedem** Build nach einer neueren Version im remote Repository gesucht wird. Default wird einmal pro Tag nach einer neueren *SNAPSHOT-Version* gesucht.
+
+ 
 ### Super POM ([offiziell](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html))
 Vergleichbar mit `Object` in Java erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse Default-Werte. Es stellt sicher dass auch bei einem [Minimalem POM](#minimales-pom) die Funktionsweise *Mavens* gewährleistet wird.
 
@@ -75,6 +107,7 @@ Das Minimum, das Maven benötigt, sind die [Koordinaten](#koordinaten) des Proje
 
 # Notizen für mich
 - eventuell vergleich zu *Ant* herstellen?
+- Commandlines mit $ markieren
 - was gibt es an Konkurrenz/Synergien?
 - Classifier?
 - Variablen in Maven?
@@ -142,6 +175,101 @@ In diesem Lebenszyklus wird die von Maven erzeugte Projektdokumentation erzeugt.
 
 
 ## Plugins
+Da *Maven* nichts anderes ist als ein Framework das verschiedene Plugins bündelt und koordiniert. Kommt dieser Thematik eine große Bedeutung zu. Ein Plugin ist für genau eine Aufgabe zuständing zum Beispiel das Kompilieren von Sourcecode oder das Erzeugen von *Javadoc*, sobald es mehrere Ausführungen einer Aufgabe gibt, Beispiel Kompilieren von Quellcode und Test-Quellcode, werden entsprechend *goals* von diesem Plugin bereit gestellt.
+
+**Namenskonvention**: <name>-maven-plugin
+Plugins mit folgendem Namen: maven-<name>-plugin stellen offizielle Plugins dar daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
+
+### Wie werden Plugins ausgeführt?
+Es gibt grundlegend drei Arten wie Plugins ausgeführt werden:
+- über die Kommandozeile
+- getriggert über die POM-Konfiguaration
+- verknüpft über Annotationen im Mojo
+
+#### Kommandozeile
+Generell werden Plugins in folgender Form aufgerufen:
+
+```console
+$ mvn <groupId>:<artifactId>[<pluginVersion>]:<goal>
+```
+
+Wird jedoch die Nameskonvention wie beschrieben eingehalten kann das Plugin (*dosome-maven-plugin*) folgendermaßen aufgerufen werden:
+
+```console
+$ mvn dosome:now
+``` 
+
+Parameter werden in der Form `-Dparameter1=wert1 -Dparamter2=wertdrölf` übergeben.
+
+#### Getriggert(POM)
+Plugins können entweder im Element `reporting` oder im Element `build` deklariert werden.
+
+Plugins die in `reporting` deklariert sind werden **automatisch** aufgerufen sobald mittels `mvn site` die *Reports* generiert werden. Plugins die innerhalb des `build` Elements deklariert wurden werden nur automatisch zusammen mit der entsprechend konfigurierten *Lifecycle-Phase* ausgeführt. Ein Beispiel einer solchen Konfiguration:
+
+```xml
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.wildfly.plugins</groupId>
+			<artifactId>wildfly-maven-plugin</artifactId>
+			<version>1.2.1.FINAL</version>
+			<executions>
+				<executions>
+					<id>undeploy</id>
+
+					<goals>
+						<goal>undeploy</goal>
+					</goals>
+
+					<phase>clean</phase>
+				</executions>
+			</executions>
+		</plugin>
+		
+		<!-- andere Plugins -->
+	</plugins>
+</build>
+```  
+
+Diese Konfiguration bewirkt dass das *Wildfly-Plugin* mit der *Clean-Phase* verknüpft wird und sobald diese ausgeführt wird wird `wildfly:undeploy` automatisch mit ausgeführt. Ein komplexeres Beispiel ist [hier](plugins/pom.xml) zu finden.
+ 
+#### default verknüpft mit phase
+Mit Hilfe von *Annotationen* können Plugins und deren Goals innerhalb eines Mojo an Phasen gebunden werden. Mehr zu zum Thema Mojo [hier](#plugins-selber-schreiben).
+
+### Konfiguration von Plugins
+Mit dem `configuration`-Element des Plugins werden Parameter festgelegt.
+Aufbauend auf unserem vorherigen Beispiel hier eine Konfiguration.
+
+```xml
+<plugin>
+	<groupId>org.wildfly.plugins</groupId>
+	<artifactId>wildfly-maven-plugin</artifactId>
+	<version>1.2.1.FINAL</version>
+	<executions>
+		<executions>
+			<id>undeploy</id>
+			<phase>clean</phase>
+
+			<goals>
+				<goal>undeploy</goal>
+			</goals>
+
+			<configuration>
+				<ignoreMissingDeployment>true</ignoreMissingDeployment>
+			</configuration>
+		</executions>
+	</executions>
+</plugin>
+``` 
+
+Plugins können pro `execution` oder auch für das gesamte konfiguriert werden.
+
+### pluginManagement
+Hier sollten Plugins deklariert werden die nicht mit einer spezifischen *Phase* verknüpft sind. Außerdem ist zu erwähnen das Plugins die hier definiert sind nicht ohne weiteres in erbenden Projekten sichtbar sind. 
+
+### Verhalten bei Updates
+### Plugins selber schreiben
+Ein Maven Plugin sind jar-Archiv, das ein oder mehrere Java-Klassen enthält. Diese Klassen werden Mojos genannt, das steht für Maven old Java Objects, in Anspielung an Pojos(
 
 ## Profile
 Um, aufbauend auf der Plattformunabhängigkeit Java's, Portierbarkeit und das Arbeiten in verschiedenen Umgebungen zu gewährleisten bietet sich die Verwendung von Profilen an. So ist es zum Beispiel möglich das Projekt nach *Development* und *Production* durch Profile zu unterscheiden und somit auch verschiedene Datenbanken oder Appserver zuverwenden.
@@ -409,7 +537,7 @@ anschließend muss nur noch das *filtering* auf erstererem aktiviert werden:
 ```
 
 ## Reporting
-Maven erzeugt mit dem [Clean-Lifecycle](#clean-lifecycle) eine Website für das Projekt.
+Maven erzeugt mit dem [Site-Lifecycle](#site-lifecycle) eine Website für das Projekt.
 Die Bestandteile sind: Projektinformationen, Projektreports und Projektdokumentation.
 
 
@@ -456,3 +584,7 @@ Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb de
 
 ### Projektdokumentation
 Wird manuell erstellt.
+[TODO]: hierfür stehen folgende Tools zur auswahl...
+
+## Nameskonventionen
+- groupId -> 

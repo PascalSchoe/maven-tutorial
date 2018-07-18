@@ -20,7 +20,7 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>${parent.groupId}</groupId>
+				<groupId>${project.parent.groupId}</groupId>
 				<artifactId>friendly-maven-plugin</artifactId>
 				<configuration>
 					<msg>${test}</msg>

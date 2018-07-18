@@ -9,6 +9,7 @@
   
   
   <modules>
+  	<module>custom-plugins</module>
   	<module>plugins</module>
   	<module>tester</module>
   	<module>reporting</module>
