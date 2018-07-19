@@ -313,7 +313,7 @@ Die Aktivierung eines Profiles kann auf verschiende Wege geschehen, diese Mögli
 #### CLI
 Durch Aufruf eines Profiles via Kommandozeile zb.: `mvn -P profile-1,profile-2`
 
-#### Maven-Settings
+#### Aktivierung durch Maven-Settings
 Beispiel:
 ```xml
 <settings>
@@ -598,3 +598,50 @@ Wird manuell erstellt.
 
 ## Nameskonventionen
 - groupId -> 
+
+## Maven Settings
+Einstellungen an Maven können auf drei Ebenen geschehen:
+1. Projekt: pom.xml 
+2. User: settings.xml  
+3. Global : settings.xml
+
+In diesem Abschnitt wird auf Punkt 2 und 3 eingegangen. Maven unterscheidet zwischen User spezifischen Einstellungen und Globalen, zu finden unter:
+
+```
+User Einstellungen: ${user.home}/.m/settings.xml
+Globale Einstellungen: ${maven.home}/conf/settings.xml
+``` 
+
+Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide die gleichen Elemente konfigurieren besitzen die User-Settings eine höhere Priorität und setzen sich damit automatisch durch.
+
+In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden. 
+
+### Repositories vs pluginRepositories
+In Maven1 wurden Plugins und normale Artefakte noch in getrennten Repositories hinterlegt, dies wurde in Maven2 geändert. Eine wichtige Unterscheidung zwischen Plugins und Artefakten ist dass Plugins zur Laufzeit verwendet werden wie zum Beispiel das Compiler-Plugin zum Übersetzen von Java-Quellcode, Artefakte werden aber wie Bibliotheken verwendet.
+
+Desweiteren bietet die Nutzung beider dieser Elemente die Möglichkeit verschiedene Konfigurationen vorzunehmen, zum Beispiel könnte es ja von Nutzen sein die `UpdatePolicy` anzupassen oder keine `SNAPSHOT`-Plugins zuverwenden.
+
+### Mirrors
+Durch das `Repositories`-Element legst du fest von wo Plugins/Artefakte geladen werden sollen. Mit dem `mirror`-Element lässt sich anhand der *id* des Repository festlegen für welches Repository dieser Mirror 'greift'. Maven bemerkt wenn es versucht etwas aus einem Repository herunterzuladen dass ein Mirror für dieses Repository registriert wurde und verwendet stattdessen die angegeben Adresse. Nachfolgend ein Beispiel:
+
+```xml
+<settings>
+	<!-- other settings-stuff --> 
+	
+	<mirrors>
+		<mirror>
+			<id>UK</id>
+			<name>UK Central</name>
+			<url>http://uk.maven.org/maven2</url>
+			<mirrorOf>central</mirrorOf> <!-- Id des Repository -->
+		</mirror>	
+	</mirrors>	
+	
+	<!-- somemore settings-stuff --> 
+</settings>	
+```
+
+diese Konfiguration bewirkt das sollte Maven ein etwas aus dem *Central-Repository* laden wollen wird anstelle dem in den USA gehostetem Repository seine Entsprechung in UK verwendet.
+
+Es darf immer nur **ein** Mirror auf ein Repository verweisen!
+Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-mirror-settings.html) finden, aus dieser Quelle wurde auch das Beispiel entnommen.
