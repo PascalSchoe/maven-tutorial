@@ -616,6 +616,8 @@ Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide
 
 In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden. 
 
+Nachfolgend werde ich auf einige Elemente gesondert eingehen.
+
 ### Repositories vs pluginRepositories
 In Maven1 wurden Plugins und normale Artefakte noch in getrennten Repositories hinterlegt, dies wurde in Maven2 geändert. Eine wichtige Unterscheidung zwischen Plugins und Artefakten ist dass Plugins zur Laufzeit verwendet werden wie zum Beispiel das Compiler-Plugin zum Übersetzen von Java-Quellcode, Artefakte werden aber wie Bibliotheken verwendet.
 
