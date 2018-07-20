@@ -20,6 +20,7 @@
 	  'org.apache.maven.doxia.siterenderer.DocumentContent' führen. -->
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -41,7 +42,6 @@
 		<module>testing</module>
 		<module>reporting</module>
 		<module>custom-reports</module>
-
 	</modules>
 
 

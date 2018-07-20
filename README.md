@@ -647,3 +647,64 @@ diese Konfiguration bewirkt das sollte Maven ein etwas aus dem *Central-Reposito
 
 Es darf immer nur **ein** Mirror auf ein Repository verweisen!
 Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-mirror-settings.html) finden, aus dieser Quelle wurde auch das Beispiel entnommen.
+
+## Testing 
+Mit Maven können natürlich unter Verwendung von Plugins **automatisiert** Tests ausgeführt werden.
+Es werden zwei Arten von Tests hier thematisiert: *Unittests* und *Integrationstests* erstere testen atomare Bestandteile der Software und letzteres testet die Funktion der Komponenten in Kombination.
+
+> Achtung! Maven findet Tests basierend auf ihrem Namen, das bedeutet die Namesgebung ist entscheidend.
+
+Abgesehen davon stellt es ein *Best-Practices* dar seine Testklassen und Methoden semantisch zu benennen. Solltest du dich dennoch gegen eine solche Namesgebung entscheiden gibt es noch die Möglichkeit Klassen über die Konfiguration des jeweiligen Plugins dem Test-Framework bekannt zu machen. Mehr dazu später. Ich empfehle eine folgende Struktur der Verzeichnisse um eine gute Übersicht über das Projekt zu gewährleisten.
+
+```
+projekt 									# Root
+|
+├─ src
+|  ├─ main									# QuellcodeRoot
+|  |  ├─ resources							# Ressourcen für euren Quellcode
+|  |  |  └── ...							
+|  |  ├─ java
+|  |  |  ├─ ClassA.java						# Definition ClassA
+|  |  |  ├─ ClassB.java						# Definition ClassB
+|  |  |  └── ...
+|  |  └── ...
+|  └── test									# TestRoot
+|      ├─ resources							# Ressourcen für eure Tests
+|      |  └── ...
+|      └── java
+|          ├─ it							# Integrationstest kommen hier rein
+|          |  ├─ ClassABInteractionsIT.java	# Integrationstests für ClassA und ClassB 
+|          |  └── ...
+|	       └── unit							# Unittest kommen hier rein
+|              ├─ ClassATests.java			# Unittests für ClassA
+|              ├─ ClassBTests.java			# Unittests für ClassB
+|              └── ...
+|  
+├─ pom.xml									# Definition eures Projktes
+└── ...
+```
+
+Auf die Plugins wird nachfolgend noch genauer eingegangen.
+
+### Surefire-Plugin
+Surefire folgt gewissen [Regeln](https://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html) um Tests im Quellcode zu finden. Es übernimmt die Abarbeitung der *Unittests*. Um Unittests auszuführen wird folgender Befehl verwendet:
+
+```console
+$ mvn test
+```
+
+### Failsafe-Plugin
+Integrationstests werden durch vier Phasen des Build-Lifecycles abgearbeitet:
+
+- `pre-integration-test`
+- `integration-test`
+- `post-integration-test`
+- `verify`
+
+Theoretisch kann das *Surefire-Plugin* auch Integrationstests übernehmen, Failsafe jedoch, wie der Name schon verspricht, bricht bei einem Test-Fehler nicht in der `integration-test`-Phase ab sondern ermöglicht Maven noch die `post-integration-test`-Phase auszuführen und somit kann die Test Umgebung sicher abgebaut und Ressourcen wieder freigegeben werden. 
+
+Failsafe folgt gewissen [Regeln](https://maven.apache.org/surefire/maven-failsafe-plugin/examples/inclusion-exclusion.html) um Tests im Quellcode zu finden. Um Integrationstests auszuführen wird folgender Befehl verwendet:
+
+```console
+$ mvn verify
+```
