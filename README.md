@@ -1,4 +1,43 @@
 # maven-tutorial
+## Installation
+### Maven
+Installiere bitte [Maven](https://maven.apache.org/download.cgi). Anschließend folge [diesen Anweisungen](https://maven.apache.org/install.html).
+
+### Wildfly
+Der Anwendungsserver der in diesem Tutorial genutzt wird ist [hier](http://wildfly.org/downloads/) zu finden.
+Nach erfolgreichen Download entpacke das Verzeichnis bitte an die gewünschte Stelle auf deinem Pc. Anschließend müssen wir die Konfiguration des Servers etwas anpassen, dies ist nur nötig wenn bei dir auch der *Port 8080* belegt ist, im meinem Fall traf dies zu. Um den Default-Port zu ändern navigiere bitte zu: `${wildfly.home}\standalone\configuration\standalone.xml` hier suchst du nun nach: `jboss.http.port` dieser ist derzeitig noch auf *8080* eingestellt wir nehmen nun *4242*, speichern und schließen.
+
+Lass uns nun den Server starten:
+Navigiere zu `${wildfly.home}\bin` durch Doppelklick auf die `standalone.bat` starten wir den Server. Anschließend solltest du im Browser unter der Adresse `localhost:4242` folgendes sehen:
+![startscrenn wildfly](resources/wildfly.png) 
+ 
+ 
+### Eclipse einrichten
+Bitte installiere folgende Plugins über den *Marketplace* von Eclipse:
+
+- EGit - Git Integration for Eclipse
+- JBoss Tools 
+- Maven Integration for Eclipse 
+ 
+### Das Maven-Tutorial Projekt
+In der Kommmandozeile (mit Adminrechten):
+
+```console
+$ cd ${wunschVerzeichnis}
+$ git clone https://github.com/PascalSchoe/maven-tutorial.git
+```
+
+Nun wird das Repository in dein Wunschverzeichnis geladen. Nachdem Git seine Arbeit verrichtet hat öffne *Eclipse*.
+
+Hier sind nun folgende Schritte auszuführen:
+
+1. `File>Import > Existing Maven Projects > Browse...` 
+2. Suche das *Maven-Tutorial*.
+3. drücke `select all`
+
+Nun sollte Eclipse das *Multi-Modul-Projekt* laden `maven-tutorial` ist dabei unser Orientierungspunkt (Super Pom). 
+Du kannst testen ob alles geklappt hat indem du einen Rechtsklick auf `maven-tutorial` tätigst und im Menü `Show in Local Terminal > Terminal` auswählst. Nun gib in die Konsole die sich öffnet folgendes ein: `mvn install` sollte das Build erfolgreich sein hat alles geklappt. Beachte dass das *Submodule* `Plugins` nur funktionsfähig ist nachdem du den [Server](#wildfly) gestartet hast.
+
 ## Generelles
 - starke Unterscheidung zw. Maven2 & Maven3
 -
