@@ -748,3 +748,19 @@ Failsafe folgt gewissen [Regeln](https://maven.apache.org/surefire/maven-failsaf
 ```console
 $ mvn verify
 ```
+
+## Eigene Archetypes schreiben
+
+Um einen eigenen *Archetype* zu schreiben muss lediglich das Projekt so zusammen gestellt werden wie es später einmal auszusehen hat. Anschließend wird mit
+
+```console 
+$ mvn archetype:create-from-project
+```
+der *Archetype* von Maven generiert, dieser ist unter `${project}\target\generated-sources\archetype` zu finden. Mit den folgenden Befehlen wird der Archetype im Katalog für Maven hinterlegt, dies ist notwendig damit wir im Anschluß ein neues Projekt mit unserem Archetype generieren können.
+
+```console
+$ cd ${project}\target\generated-sources\archetype
+$ mvn install 											# oder *deploy* wenn es im remote Catalog hinterlegt werden soll  
+```
+
+Nun kann ein neues Projekt aus unserem Archetype erzeugt werden. Ein Beispiel findest du [hier](custom-archetypes/). 

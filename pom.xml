@@ -42,6 +42,7 @@
 		<module>testing</module>
 		<module>reporting</module>
 		<module>custom-reports</module>
+		<module>custom-archetypes</module>
 	</modules>
 
 
