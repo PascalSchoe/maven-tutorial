@@ -9,7 +9,8 @@ Nach erfolgreichen Download entpacke das Verzeichnis bitte an die gewünschte St
 
 Lass uns nun den Server starten:
 Navigiere zu `${wildfly.home}\bin` durch Doppelklick auf die `standalone.bat` starten wir den Server. Anschließend solltest du im Browser unter der Adresse `localhost:4242` folgendes sehen:
-![startscrenn wildfly](resources/wildfly.png) 
+
+![startscrenn wildfly](resources/wildfly.PNG) 
  
  
 ### Eclipse einrichten
