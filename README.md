@@ -10,16 +10,16 @@ Nach erfolgreichen Download entpacke das Verzeichnis bitte an die gewünschte St
 Lass uns nun den Server starten:
 Navigiere zu `${wildfly.home}\bin` durch Doppelklick auf die `standalone.bat` starten wir den Server. Anschließend solltest du im Browser unter der Adresse `localhost:4242` folgendes sehen:
 
-![startscrenn wildfly](resources/wildfly.PNG) 
- 
- 
+![startscrenn wildfly](resources/wildfly.PNG)
+
+
 ### Eclipse einrichten
 Bitte installiere folgende Plugins über den *Marketplace* von Eclipse:
 
 - EGit - Git Integration for Eclipse
-- JBoss Tools 
-- Maven Integration for Eclipse 
- 
+- JBoss Tools
+- Maven Integration for Eclipse
+
 ### Das Maven-Tutorial Projekt
 In der Kommmandozeile (mit Adminrechten):
 
@@ -32,11 +32,11 @@ Nun wird das Repository in dein Wunschverzeichnis geladen. Nachdem Git seine Arb
 
 Hier sind nun folgende Schritte auszuführen:
 
-1. `File>Import > Existing Maven Projects > Browse...` 
+1. `File>Import > Existing Maven Projects > Browse...`
 2. Suche das *Maven-Tutorial*.
 3. drücke `select all`
 
-Nun sollte Eclipse das *Multi-Modul-Projekt* laden `maven-tutorial` ist dabei unser Orientierungspunkt (Super Pom). 
+Nun sollte Eclipse das *Multi-Modul-Projekt* laden `maven-tutorial` ist dabei unser Orientierungspunkt (Super Pom).
 Du kannst testen ob alles geklappt hat indem du einen Rechtsklick auf `maven-tutorial` tätigst und im Menü `Show in Local Terminal > Terminal` auswählst. Nun gib in die Konsole die sich öffnet folgendes ein: `mvn install` sollte das Build erfolgreich sein hat alles geklappt. Beachte dass das *Submodule* `Plugins` nur funktionsfähig ist nachdem du den [Server](#wildfly) gestartet hast.
 
 ## Generelles
@@ -113,9 +113,9 @@ Legt fest **wo** Maven nach Plugins und Dependencies suchen soll. Hier eine Beis
 		<id>snapshots</id>
 		<url>http://maven.kitchenware.com/snapshot</url>
 		<snapshots>
-			<enabled>true</enabled>	
+			<enabled>true</enabled>
 			<updatePolicy>always</updatePolicy>
-		</snapshots>	
+		</snapshots>
 	</repository>
 
 	<repository>
@@ -128,7 +128,7 @@ Legt fest **wo** Maven nach Plugins und Dependencies suchen soll. Hier eine Beis
 Die `updatePolicy` 'always' bewirkt das wirklich bei **jedem** Build nach einer neueren Version im remote Repository gesucht wird. Default wird einmal pro Tag nach einer neueren *SNAPSHOT-Version* gesucht.
 
 *Repositories* können im *pom.xml* (evtl. sogar Super-POM) oder/und in der *settings.xml* definiert werden.
- 
+
 ### Super POM ([offiziell](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html))
 Vergleichbar mit `Object` in Java erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse Default-Werte. Es stellt sicher dass auch bei einem [Minimalem POM](#minimales-pom) die Funktionsweise *Mavens* gewährleistet wird.
 
@@ -241,7 +241,7 @@ Wird jedoch die Nameskonvention wie beschrieben eingehalten kann das Plugin (*do
 
 ```console
 $ mvn dosome:now
-``` 
+```
 
 Parameter werden in der Form `-Dparameter1=wert1 -Dparamter2=wertdrölf` übergeben.
 
@@ -269,14 +269,14 @@ Plugins die in `reporting` deklariert sind werden **automatisch** aufgerufen sob
 				</executions>
 			</executions>
 		</plugin>
-		
+
 		<!-- andere Plugins -->
 	</plugins>
 </build>
 ```  
 
 Diese Konfiguration bewirkt dass das *Wildfly-Plugin* mit der *Clean-Phase* verknüpft wird und sobald diese ausgeführt wird wird `wildfly:undeploy` automatisch mit ausgeführt. Ein komplexeres Beispiel ist [hier](plugins/pom.xml) zu finden.
- 
+
 #### default verknüpft mit phase
 Mit Hilfe von *Annotationen* können Plugins und deren Goals innerhalb eines Mojo an Phasen gebunden werden. Mehr zu zum Thema Mojo [hier](#plugins-selber-schreiben).
 
@@ -304,12 +304,12 @@ Aufbauend auf unserem vorherigen Beispiel hier eine Konfiguration.
 		</executions>
 	</executions>
 </plugin>
-``` 
+```
 
 Plugins können pro `execution` oder auch für das gesamte konfiguriert werden.
 
 ### pluginManagement
-Hier sollten Plugins deklariert werden die nicht mit einer spezifischen *Phase* verknüpft sind. Außerdem ist zu erwähnen das Plugins die hier definiert sind nicht ohne weiteres in erbenden Projekten sichtbar sind. 
+Hier sollten Plugins deklariert werden die nicht mit einer spezifischen *Phase* verknüpft sind. Außerdem ist zu erwähnen das Plugins die hier definiert sind nicht ohne weiteres in erbenden Projekten sichtbar sind.
 
 ### Plugins selber schreiben
 Ein Maven Plugin ist ein *jar-Archiv*, das ein oder mehrere Java-Klassen enthält. Diese Klassen werden *Mojos* genannt, das steht für 'Maven plain old Java Object', in Anspielung an Pojos(Plain old Java Object). Jedes *Mojo* stellt ein *Goal* für das jeweilige Plugin dar.
@@ -319,7 +319,7 @@ Ein Maven Plugin ist ein *jar-Archiv*, das ein oder mehrere Java-Klassen enthäl
 $ cd tester
 $ mvn friendly:say-something
 ```
-aufgerufen werden. 
+aufgerufen werden.
 
 ## Profile
 Um, aufbauend auf der Plattformunabhängigkeit Java's, Portierbarkeit und das Arbeiten in verschiedenen Umgebungen zu gewährleisten bietet sich die Verwendung von Profilen an. So ist es zum Beispiel möglich das Projekt nach *Development* und *Production* durch Profile zu unterscheiden und somit auch verschiedene Datenbanken oder Appserver zuverwenden.
@@ -637,11 +637,11 @@ Wird manuell erstellt.
 [TODO]: hierfür stehen folgende Tools zur auswahl...
 
 ## Nameskonventionen
-- groupId -> 
+- groupId ->
 
 ## Maven Settings
 Einstellungen an Maven können auf drei Ebenen geschehen:
-1. Projekt: pom.xml 
+1. Projekt: pom.xml
 2. User: settings.xml  
 3. Global : settings.xml
 
@@ -650,11 +650,11 @@ In diesem Abschnitt wird auf Punkt 2 und 3 eingegangen. Maven unterscheidet zwis
 ```
 User Einstellungen: ${user.home}/.m/settings.xml
 Globale Einstellungen: ${maven.home}/conf/settings.xml
-``` 
+```
 
 Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide die gleichen Elemente konfigurieren besitzen die User-Settings eine höhere Priorität und setzen sich damit automatisch durch.
 
-In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden. 
+In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden.
 
 Nachfolgend werde ich auf einige Elemente gesondert eingehen.
 
@@ -668,19 +668,19 @@ Durch das `Repositories`-Element legst du fest von wo Plugins/Artefakte geladen 
 
 ```xml
 <settings>
-	<!-- other settings-stuff --> 
-	
+	<!-- other settings-stuff -->
+
 	<mirrors>
 		<mirror>
 			<id>UK</id>
 			<name>UK Central</name>
 			<url>http://uk.maven.org/maven2</url>
 			<mirrorOf>central</mirrorOf> <!-- Id des Repository -->
-		</mirror>	
-	</mirrors>	
-	
-	<!-- somemore settings-stuff --> 
-</settings>	
+		</mirror>
+	</mirrors>
+
+	<!-- somemore settings-stuff -->
+</settings>
 ```
 
 diese Konfiguration bewirkt das sollte Maven ein etwas aus dem *Central-Repository* laden wollen wird anstelle dem in den USA gehostetem Repository seine Entsprechung in UK verwendet.
@@ -688,7 +688,7 @@ diese Konfiguration bewirkt das sollte Maven ein etwas aus dem *Central-Reposito
 Es darf immer nur **ein** Mirror auf ein Repository verweisen!
 Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-mirror-settings.html) finden, aus dieser Quelle wurde auch das Beispiel entnommen.
 
-## Testing 
+## Testing
 Mit Maven können natürlich unter Verwendung von Plugins **automatisiert** Tests ausgeführt werden.
 Es werden zwei Arten von Tests hier thematisiert: *Unittests* und *Integrationstests* erstere testen atomare Bestandteile der Software und letzteres testet die Funktion der Komponenten in Kombination.
 
@@ -713,7 +713,7 @@ projekt......................................# Root
 |      |  └── ...
 |      └── java
 |          ├─ it.............................# Integrationstest kommen hier rein
-|          |  ├─ ClassABInteractionsIT.java..# Integrationstests für ClassA und ClassB 
+|          |  ├─ ClassABInteractionsIT.java..# Integrationstests für ClassA und ClassB
 |          |  └── ...
 |	       └── unit..........................# Unittest kommen hier rein
 |              ├─ ClassATests.java...........# Unittests für ClassA
@@ -721,6 +721,32 @@ projekt......................................# Root
 |              └── ...
 |  
 ├─ pom.xml...................................# Definition eures Projktes
+└── ...
+```
+
+```
+projekt                                       # Root
+├── src
+│   ├── main                                  # QuellcodeRoot
+│   │   ├── resources                         # Ressourcen für euren Quellcode
+│   │   │   └── ...
+│   │   ├── java
+│   │   │   ├── ClassA.java                    # Definition ClassA
+│   │   │   ├── ClassB.java                    # Definition ClassB
+│   │   │   └── ...
+│   │   └── ...
+│   └── test                                   # TestRoot
+│       ├── resources                          # Ressourcen für eure Tests
+│       │   └── ...
+│       └── java
+│           ├── it                             # Integrationstest kommen hier rein
+│           │   ├── ClassABInteractionsIT.java # Integrationstests für ClassA und ClassB
+│           │   └── ...
+│           └── unit                           # Unittest kommen hier rein
+│               ├── ClassATests.java           # Unittests für ClassA
+│               ├── ClassBTests.java           # Unittests für ClassB
+│               └── ...
+├── pom.xml                                    # Definition eures Projktes
 └── ...
 ```
 
@@ -741,7 +767,7 @@ Integrationstests werden durch vier Phasen des Build-Lifecycles abgearbeitet:
 - `post-integration-test`
 - `verify`
 
-Theoretisch kann das *Surefire-Plugin* auch Integrationstests übernehmen, Failsafe jedoch, wie der Name schon verspricht, bricht bei einem Test-Fehler nicht in der `integration-test`-Phase ab sondern ermöglicht Maven noch die `post-integration-test`-Phase auszuführen und somit kann die Test Umgebung sicher abgebaut und Ressourcen wieder freigegeben werden. 
+Theoretisch kann das *Surefire-Plugin* auch Integrationstests übernehmen, Failsafe jedoch, wie der Name schon verspricht, bricht bei einem Test-Fehler nicht in der `integration-test`-Phase ab sondern ermöglicht Maven noch die `post-integration-test`-Phase auszuführen und somit kann die Test Umgebung sicher abgebaut und Ressourcen wieder freigegeben werden.
 
 Failsafe folgt gewissen [Regeln](https://maven.apache.org/surefire/maven-failsafe-plugin/examples/inclusion-exclusion.html) um Tests im Quellcode zu finden. Um Integrationstests auszuführen wird folgender Befehl verwendet:
 
@@ -753,11 +779,11 @@ $ mvn verify
 
 Um einen eigenen *Archetype* zu schreiben muss lediglich das Projekt so zusammen gestellt werden wie es später einmal auszusehen hat. Anschließend wird mit
 
-```console 
+```console
 $ mvn archetype:create-from-project
 ```
 
-der *Archetype* von Maven generiert, dieser ist nun unter 
+der *Archetype* von Maven generiert, dieser ist nun unter
 `${project}\target\generated-sources\archetype` zu finden. Mit den folgenden Befehlen wird der Archetype im Katalog für Maven hinterlegt, dies ist notwendig damit wir im Anschluß ein neues Projekt mit unserem Archetype generieren können.
 
 ```console
@@ -767,4 +793,4 @@ $ mvn install
 
 > alternativ *deploy* ansteller von *install* wenn unser Archetype im *remote Katalog* hinterlegt werden soll  
 
-Nun kann ein neues Projekt aus unserem Archetype erzeugt werden. Ein Beispiel findest du [hier](custom-archetypes/). 
+Nun kann ein neues Projekt aus unserem Archetype erzeugt werden. Ein Beispiel findest du [hier](custom-archetypes/).
