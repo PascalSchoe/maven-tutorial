@@ -697,34 +697,6 @@ Es werden zwei Arten von Tests hier thematisiert: *Unittests* und *Integrationst
 Abgesehen davon stellt es ein *Best-Practices* dar seine Testklassen und Methoden semantisch zu benennen. Solltest du dich dennoch gegen eine solche Namesgebung entscheiden gibt es noch die Möglichkeit Klassen über die Konfiguration des jeweiligen Plugins dem Test-Framework bekannt zu machen. Mehr dazu später. Ich empfehle eine folgende Struktur der Verzeichnisse um eine gute Übersicht über das Projekt zu gewährleisten.
 
 ```
-projekt......................................# Root
-|
-├─ src
-|  ├─ main...................................# QuellcodeRoot
-|  |  ├─ resources...........................# Ressourcen für euren Quellcode
-|  |  |  └── ...							
-|  |  ├─ java
-|  |  |  ├─ ClassA.java......................# Definition ClassA
-|  |  |  ├─ ClassB.java......................# Definition ClassB
-|  |  |  └── ...
-|  |  └── ...
-|  └── test..................................# TestRoot
-|      ├─ resources..........................# Ressourcen für eure Tests
-|      |  └── ...
-|      └── java
-|          ├─ it.............................# Integrationstest kommen hier rein
-|          |  ├─ ClassABInteractionsIT.java..# Integrationstests für ClassA und ClassB
-|          |  └── ...
-|	       └── unit..........................# Unittest kommen hier rein
-|              ├─ ClassATests.java...........# Unittests für ClassA
-|              ├─ ClassBTests.java...........# Unittests für ClassB
-|              └── ...
-|  
-├─ pom.xml...................................# Definition eures Projktes
-└── ...
-```
-
-```
 projekt                                       # Root
 ├── src
 │   ├── main                                  # QuellcodeRoot
