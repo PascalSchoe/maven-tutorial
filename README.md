@@ -64,7 +64,7 @@ Maven kennt drei *Standard-Lebenszyklen*:
 Für jede Teilaufgabe gibt es genau **ein** *Maven-Plugin*, welches die Abarbeitung übernimmt. Wenn ein *Plugin* mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile` (sofern kein *Default-Goal* definiert ist).
 
 **Kurz gesagt:**
-> *Lebenszyklen* bestehen aus *Phasen*, diese werden von *Plugins*, die wiederum verschiedene *Goals* haben, realisiert.
+> **Lebenszyklen** bestehen aus **Phasen**, diese werden von **Plugins**, die wiederum verschiedene **Goals** haben, realisiert.
 
 Nachfolgend werden die einzelnen Lebenszyklen im Detail beschrieben.
 
@@ -190,8 +190,7 @@ Beispiel:
 Mehr zu *Properties* und wie sie verwendet werden [hier](#variablen).
 
 ### Packaging
-Gehört nur indirekt zu den [Koordinaten](#koordinaten). Wenn nicht anders angegeben wird `jar` verwendet.
-
+Gehört nur indirekt zu den [Koordinaten](#koordinaten). Wenn nicht anders angegeben wird `jar` verwendet.<br/>
 Folgende Werte sind verfügbar:
 
 | Wert | Wirkung |
@@ -263,19 +262,12 @@ Das Minimum, das *Maven* benötigt, sind die [Koordinaten](#koordinaten) des Pro
   <version>1.0.0</version>
 </project>
 ```
-
-# Notizen für mich
-- Aufgaben
-  - 4.4 Buch
-  - Profile für development & production(S.153 !)
-
-
 ## Plugins
 Da *Maven* nichts anderes ist als ein *Framework* das verschiedene *Plugins* bündelt und koordiniert. Kommt dieser Thematik eine große Bedeutung zu. Ein *Plugin* ist für **genau eine** Aufgabe zuständing zum Beispiel das Kompilieren von *Sourcecode* oder das Erzeugen von *Javadoc*, sobald es mehrere Ausführungen einer Aufgabe gibt, zum Beispiel das Kompilieren von Quellcode und Test-Quellcode, werden entsprechend mehrere *goals* von diesem Plugin bereit gestellt.
 
 **Namenskonvention:**
-> ${eigentlicherName}-maven-plugin<br/>
-Plugins mit folgendem Namen: maven-${eigentlicherName}-plugin stellen offizielle Plugins dar, daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
+> `${eigentlicherName}-maven-plugin`<br/>
+Plugins mit folgendem Namen: `maven-${eigentlicherName}-plugin` stellen offizielle Plugins dar, daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
 
 ### Wie werden Plugins ausgeführt?
 Es gibt grundlegend drei Arten wie *Plugins* ausgeführt werden:
@@ -707,7 +699,7 @@ Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target\sit
 Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, **anstatt** im `reporting`-Element, anzugeben dies wurde jedoch vorerst rückgängig gemacht, ich weiß nicht ob sich dies zukünfigt ändern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
 
 ### Eigene Reports
-Ähnlich zu Plugins werden [eigene Reports](http://maven.apache.org/shared/maven-reporting-impl/index.html) so geschrieben.
+Ähnlich zu Plugins werden eigene Reports[so](http://maven.apache.org/shared/maven-reporting-impl/index.html) geschrieben.
 
 ### Projektdokumentation
 Die *Projektdokumentation* wird manuell erstllt und kann zum Beispiel Bedienungsanleitungen, *FAQs* oder *Wikis* sonstiges enthalten.
@@ -825,7 +817,7 @@ $ mvn verify
 ```
 
 ## Archetypes
-*Archetypes* sind quasi *Projekt-Templates* so ist es möglich sich schnell von *Maven* die Struktur für ein *deploybares Webprojekt* erzeugen zu lassen wenn der entsprechende *Archetype* vorhanden ist. Somit müssen ähnliche Projekte nicht immer wieder komplett von vorn definiert werden.
+*Archetypes* sind quasi *Projekt-Templates*, so ist es zb. möglich sich schnell von *Maven* die Struktur für ein *deploybares Webprojekt* erzeugen zu lassen wenn der entsprechende *Archetype* vorhanden ist. Somit müssen ähnliche Projekte nicht immer wieder komplett von vorn definiert werden.
 
 ### Eigene Archetypes schreiben
 Um einen eigenen *Archetype* zu schreiben muss lediglich das Projekt so zusammen gestellt werden wie es später einmal auszusehen hat. Anschließend wird mit
