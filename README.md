@@ -1,11 +1,20 @@
 # maven-tutorial
+
 ## Installation
+
 ### Maven
-Installiere bitte [Maven](https://maven.apache.org/download.cgi). Anschließend folge [diesen Anweisungen](https://maven.apache.org/install.html).
+Installiere bitte [Maven](https://maven.apache.org/download.cgi).
+Anschließend folge [diesen Anweisungen](https://maven.apache.org/install.html).
 
 ### Wildfly
 Der Anwendungsserver der in diesem Tutorial genutzt wird ist [hier](http://wildfly.org/downloads/) zu finden.
-Nach erfolgreichen Download entpacke das Verzeichnis bitte an die gewünschte Stelle auf deinem Pc. Anschließend müssen wir die Konfiguration des Servers etwas anpassen, dies ist nur nötig wenn bei dir auch der *Port 8080* belegt ist, im meinem Fall traf dies zu. Um den Default-Port zu ändern navigiere bitte zu: `${wildfly.home}\standalone\configuration\standalone.xml` hier suchst du nun nach: `jboss.http.port` dieser ist derzeitig noch auf *8080* eingestellt wir nehmen nun *4242*, speichern und schließen.
+Nach erfolgreichem Download entpacke das Verzeichnis bitte an die gewünschte Stelle auf deinem Computer. Anschließend müssen wir die Konfiguration des Servers etwas anpassen, dies ist nur nötig wenn bei dir auch der *Port 8080* belegt ist, im meinem Fall ist es so. Um den *Default-Port* zu ändern führe bitte folgende Schritte aus:
+
+1. Navigiere in das Verzeichnis `${wildfly.home}\standalone\configuration`
+2. Öffne die Datei `standalone.xml`
+3. Suche nach `jboss.http.port`, dieser ist derzeitig noch auf *8080* eingestellt
+4. Ändere den Wert auf *4242*
+5. Speichern & schließen.
 
 Lass uns nun den Server starten:
 Navigiere zu `${wildfly.home}\bin` durch Doppelklick auf die `standalone.bat` starten wir den Server. Anschließend solltest du im Browser unter der Adresse `localhost:4242` folgendes sehen:
@@ -20,7 +29,7 @@ Bitte installiere folgende Plugins über den *Marketplace* von Eclipse:
 - JBoss Tools
 - Maven Integration for Eclipse
 
-### Das Maven-Tutorial Projekt
+### Maven-Tutorial Projekt
 In der Kommmandozeile (mit Adminrechten):
 
 ```console
@@ -28,20 +37,72 @@ $ cd ${wunschVerzeichnis}
 $ git clone https://github.com/PascalSchoe/maven-tutorial.git
 ```
 
-Nun wird das Repository in dein Wunschverzeichnis geladen. Nachdem Git seine Arbeit verrichtet hat öffne *Eclipse*.
+Nun wird das *Repository* in dein Wunschverzeichnis geladen. Nachdem *Git* seine Arbeit verrichtet hat öffne *Eclipse*.
 
 Hier sind nun folgende Schritte auszuführen:
 
-1. `File>Import > Existing Maven Projects > Browse...`
+1. `File > Import > Existing Maven Projects > Browse...`
 2. Suche das *Maven-Tutorial*.
 3. drücke `select all`
 
-Nun sollte Eclipse das *Multi-Modul-Projekt* laden `maven-tutorial` ist dabei unser Orientierungspunkt (Super Pom).
-Du kannst testen ob alles geklappt hat indem du einen Rechtsklick auf `maven-tutorial` tätigst und im Menü `Show in Local Terminal > Terminal` auswählst. Nun gib in die Konsole die sich öffnet folgendes ein: `mvn install` sollte das Build erfolgreich sein hat alles geklappt. Beachte dass das *Submodule* `Plugins` nur funktionsfähig ist nachdem du den [Server](#wildfly) gestartet hast.
+Nun sollte Eclipse das [Multi-Modul-Projekt](http://www.codetab.org/apache-maven-tutorial/maven-multi-module-project/) laden `maven-tutorial` ist dabei unser Orientierungspunkt (Parent Pom).
+Du kannst testen ob alles geklappt hat indem du einen Rechtsklick auf `maven-tutorial` tätigst und im Menü `Show in Local Terminal > Terminal` auswählst. Nun gib in die Konsole die sich öffnet folgendes ein: `mvn install` sollte das Build erfolgreich sein hat alles geklappt.
 
-## Generelles
-- starke Unterscheidung zw. Maven2 & Maven3
--
+**Beachte:**
+Das *Submodule* `Plugins` ist nur funktionsfähig nachdem du den [Server](#wildfly) gestartet hast.
+
+## Lebenszyklen
+Ein Grundprinzip Mavens sind die Lebenszyklen in Verbindung mit [Plugins](#plugins).
+Beim dem Übersetzen von Quellcode und dem Erzeugen von Anwendungen lassen sich wiederkehrende Aufgaben erkennen.
+Maven verallgemeinert und abstrahiert diese in mehrere Schritte (*Phasen*), die logische Zusammenfassung eines mehrerer Phasen nennt Maven *Lebenszyklus*.
+Maven kennt drei Standard-Lebenszyklen:
+
+- Default/Build
+- Clean
+- Site
+
+Für jede Teilaufgabe gibt es genau **ein** Maven-Plugin, welches die Abarbeitung vornimmt. Wenn ein Plugin mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile`.
+
+> Kurz gesagt: **_Lebenszyklen_ bestehen aus _Phasen_, diese werden von _Plugins_, die wiederum verschiedene _Goals_ haben, realisiert.**
+
+Nachfolgend werden die einzelnen Lebenszyklen im Detail beschrieben.
+
+### Build Lebenszyklus
+Beinhaltet alle *Phasen* die zum übersetzen von Quellcode und Erzeugen der Anwendung benötigt werden.
+Nachfolgend eine Lister der Grundlegenden Phasen des Default-Lifecycle:
+
+| Phase | Funktion |
+| --- | --- |
+| `validate` | überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-(pom)). |
+| `compile` | übersetzt den Quellcode des Projektes in das Zielverzeichniss. |
+| `test` | Führt die verfügbaren Unit-Test unter Verwendung des passenden Frameworks aus, zum Beispiel _JUnit_. |
+| `package` |  Erzeugt ein Java-Archiv, je nach gewähltem [packaging-typ](#packagingpackaging). |
+| `verify` |  überprüft das erzeugte Archiv und stellt fest, ob es im Maven-Repository abgelegt werden darf. |
+| `install` |  Legt das erzeugte Archiv im lokalen Maven-Repository ab. |
+| `deploy` |  Legt das erzeugte Archiv im remote Maven-Repository, welches dies ist wird mit dem [distributionManagement-Element](#distributionmanagementdistributionmanagement) festgelegt). |
+
+Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische Phase ausgeführt, wie zb `install`, so werden alle in der Reihenfolge, des Lebenszykluses, liegenden Phasen ebenfalls ausgeführt.
+
+Beispiel  
+### Clean Lebenszyklus
+Beinhaltet alle Phansen die beim 'aufräumen' eines Projektes notwendig sind. Die von Maven erzeugten Dateien und Ordner unter dem Verzeichnis `target` werden entfernt.
+
+| Phase | Funktion |
+| --- | --- |
+| `pre-clean` | Vorbereitungen für die *clean*-Phase. |
+| `clean` | Räumt das Projekt auf und entfernt die vom letzten Build erzeugten Dateien und Ordner. |
+| `post-clean` | Abschlussphase des Clean-Lifecycle. |
+
+### Site Lebenszyklus
+In diesem Lebenszyklus wird die von Maven erzeugte Projektdokumentation erzeugt.
+
+| Phase | Funktion |
+| --- | --- |
+| `pre-site` | Vorbereitungen für das Erzeugen der Projektdokumentation. |
+| `site` | Erzeugt die Projektdokumentation als *HTML* durch die Ausführung aller unter `reporting` konfigurierten [Reporting-Plugins](#reporting). |
+
+
+
 ## Project Object Model (POM)
 Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche Abhägingkeiten es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb des Lebenszykluses gebunden sind.
 
@@ -97,7 +158,7 @@ Für das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *
 - `snapshotRepository`: Deployment von **SNAPSHOT-Versionen** ([siehe Versionen](#versionversion))
 - `site`: Definiert die Addresse für das Deployment der von Maven genierten **Dokumentation**.
 
- Jedes der beschriebenen Elemente des *distributionManagement* benötigt folgende Attribute:
+ Jedes der beschriebenen Elemente des *distributionManagement* benötigt folgende Elemente:
 
  - **id**: Identifiziert das Repository eindeutig unter mehreren.
  - **name**: Für Menschen lesbare Form der *id*.
@@ -147,82 +208,20 @@ Das Minimum, das Maven benötigt, sind die [Koordinaten](#koordinaten) des Proje
 
 
 # Notizen für mich
-- eventuell vergleich zu *Ant* herstellen?
-- Commandlines mit $ markieren
-- was gibt es an Konkurrenz/Synergien?
-- Classifier?
-- Variablen in Maven?
-- Properties
-- Attribut durch ELement ersetzen?
-- reporting (Pom)
-- Lifecycle vor POM?
-- CI-Element ?
 - 4.4 Buch
-- alle phasen link
-- Installation
-- Eventuell ein zusammenhängendes Projekt statt vieler kleiner Bausteine ?
+- Verlinkung innerhalb des Dokumentes
 - Einheitliches Konzept für Dokumentation
-- Links anpassen
 
 ## Aufgaben
 - Profile für development & production(S.153 !)
 
-## Lebenszyklen
-Ein Grundprinzip Mavens sind die Lebenszyklen in Verbindung mit [Plugins](#plugins).
-Beim dem Übersetzen von Quellcode und dem Erzeugen von Anwendungen lassen sich wiederkehrende Aufgaben erkennen.
-Maven verallgemeinert und abstrahiert diese in mehrere Schritte (*Phasen*), die logische Zusammenfassung eines mehrerer Phasen nennt Maven *Lebenszyklus*.
-Maven kennt drei Standard-Lebenszyklen:
-
-- Default/Build
-- Clean
-- Site
-
-Für jede Teilaufgabe gibt es genau **ein** Maven-Plugin, welches die Abarbeitung vornimmt. Wenn ein Plugin mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile`.
-
-> Kurz gesagt: **_Lebenszyklen_ bestehen aus _Phasen_, diese werden von _Plugins_, die wiederum verschiedene _Goals_ haben, realisiert.**
-
-Nachfolgend werden die einzelnen Lebenszyklen im Detail beschrieben.
-
-### Build Lebenszyklus
-Beinhaltet alle *Phasen* die zum übersetzen von Quellcode und Erzeugen der Anwendung benötigt werden.
-Nachfolgend eine Lister der Grundlegenden Phasen des Default-Lifecycle:
-
-| Phase | Funktion |
-| --- | --- |
-| `validate` | überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-(pom)). |
-| `compile` | übersetzt den Quellcode des Projektes in das Zielverzeichniss. |
-| `test` | Führt die verfügbaren Unit-Test unter Verwendung des passenden Frameworks aus, zum Beispiel _JUnit_. |
-| `package` |  Erzeugt ein Java-Archiv, je nach gewähltem [packaging-typ](#packagingpackaging). |
-| `verify` |  überprüft das erzeugte Archiv und stellt fest, ob es im Maven-Repository abgelegt werden darf. |
-| `install` |  Legt das erzeugte Archiv im lokalen Maven-Repository ab. |
-| `deploy` |  Legt das erzeugte Archiv im remote Maven-Repository, welches dies ist wird mit dem [distributionManagement-Attribut](#distributionmanagementdistributionmanagement) festgelegt). |
-
-Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische Phase ausgeführt, wie zb `install`, so werden alle in der Reihenfolge, des Lebenszykluses, liegenden Phasen ebenfalls ausgeführt.
-
-Beispiel  
-### Clean Lebenszyklus
-Beinhaltet alle Phansen die beim 'aufräumen' eines Projektes notwendig sind. Die von Maven erzeugten Dateien und Ordner unter dem Verzeichnis `target` werden entfernt.
-
-| Phase | Funktion |
-| --- | --- |
-| `pre-clean` | Vorbereitungen für die *clean*-Phase. |
-| `clean` | Räumt das Projekt auf und entfernt die vom letzten Build erzeugten Dateien und Ordner. |
-| `post-clean` | Abschlussphase des Clean-Lifecycle. |
-
-### Site Lebenszyklus
-In diesem Lebenszyklus wird die von Maven erzeugte Projektdokumentation erzeugt.
-
-| Phase | Funktion |
-| --- | --- |
-| `pre-site` | Vorbereitungen für das Erzeugen der Projektdokumentation. |
-| `site` | Erzeugt die Projektdokumentation als *HTML* durch die Ausführung aller unter `reporting` konfigurierten [Reporting-Plugins](#reporting). |
 
 
 ## Plugins
 Da *Maven* nichts anderes ist als ein Framework das verschiedene Plugins bündelt und koordiniert. Kommt dieser Thematik eine große Bedeutung zu. Ein Plugin ist für genau eine Aufgabe zuständing zum Beispiel das Kompilieren von Sourcecode oder das Erzeugen von *Javadoc*, sobald es mehrere Ausführungen einer Aufgabe gibt, Beispiel Kompilieren von Quellcode und Test-Quellcode, werden entsprechend *goals* von diesem Plugin bereit gestellt.
 
-**Namenskonvention**: <name>-maven-plugin
-Plugins mit folgendem Namen: maven-<name>-plugin stellen offizielle Plugins dar daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
+**Namenskonvention**: ${eigentlicherName}-maven-plugin
+Plugins mit folgendem Namen: maven-${eigentlicherName}-plugin stellen offizielle Plugins dar daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
 
 ### Wie werden Plugins ausgeführt?
 Es gibt grundlegend drei Arten wie Plugins ausgeführt werden:
@@ -315,6 +314,7 @@ Hier sollten Plugins deklariert werden die nicht mit einer spezifischen *Phase* 
 Ein Maven Plugin ist ein *jar-Archiv*, das ein oder mehrere Java-Klassen enthält. Diese Klassen werden *Mojos* genannt, das steht für 'Maven plain old Java Object', in Anspielung an Pojos(Plain old Java Object). Jedes *Mojo* stellt ein *Goal* für das jeweilige Plugin dar.
 
 [Hier](custom-plugins/) findest du ein Beispiel für ein selbst geschriebenes Plugin, dieses wird in das [tester-projekt](tester/pom.xml) eingebunden und kann mit
+
 ```console
 $ cd tester
 $ mvn friendly:say-something
@@ -326,7 +326,7 @@ Um, aufbauend auf der Plattformunabhängigkeit Java's, Portierbarkeit und das Ar
 
 **Namenskonvention**
 Sollte ein Profil durch eine Variable und dem entsprechenden Wert aktiviert werden so ist folgender Name von Vorteil:
-*variablenName-wertDerVariable*
+*${variablenName}-${wertDerVariable}*
 So ist bei folgendem Aufruf: `mvn -Denv=test install` klar dass, sofern vorhanden, das Profil mit dem Namen: 'env-test' aktiv sein wird.
 
 ### Definition eines Profiles
@@ -348,10 +348,20 @@ Je nach Profilart lassen sich verschiedene Elemente manipulieren. Außerdem unte
 | pom.xml | 4 | `build`<br/>`dependencies`<br/>`dependencyManagement`<br/>`distributionManagement`<br/>`pluginRepositories`<br/>`modules`<br/>`plugins`<br/>`properties`<br/>`reporting`<br/>`repositories`<br/>`reporting` |
 
 ### Aktivierung eines Profiles
-Die Aktivierung eines Profiles kann auf verschiende Wege geschehen, diese Möglichkeiten werden im Folgenden Sektionen beschrieben. Um festzustellen welche Profile derzeitig aktiv sind kann der Kommandozeilenaufruf: `mvn help:active-profiles` verwendet werden.
+Die Aktivierung eines Profiles kann auf verschiende Wege geschehen, diese Möglichkeiten werden im Folgenden Sektionen beschrieben. Um festzustellen welche Profile derzeitig aktiv sind kann der Kommandozeilenaufruf:
+
+```console
+$ mvn help:active-profiles
+```
+
+ verwendet werden.
 
 #### CLI
-Durch Aufruf eines Profiles via Kommandozeile zb.: `mvn -P profile-1,profile-2`
+Durch Aufruf eines Profiles via Kommandozeile zb.:
+
+```console
+$ mvn -P profile-1,profile-2`
+```
 
 #### Aktivierung durch Maven-Settings
 Beispiel:
@@ -365,7 +375,8 @@ Beispiel:
 </settings>
 ```
 
-Hier ist es möglich mehrere `activeProfile`-Elemente anzugeben.
+**Achtung:**
+> Hier ist es möglich mehrere `activeProfile`-Elemente anzugeben.
 
 #### Build-Umgebung
 Profile können automatisch aktiviert werden je nach Zustand der Build-Umgebung, so werden bei Definition des Profiles gewisse *Trigger* in Form des `activation`-Elements übergeben. Um zu testen ob die Umgebung einer gewissen Kriterium genügt wird *prefix-matching* verwendet. So kann beispielsweise auf die *jdk*-Version getestet werden:
@@ -403,10 +414,17 @@ Ebenfalls ist es möglich auf das Betriebssystem zu testen:
     <!-- Profildetails -->
 </profiles>
 ```
+
 mehr Informationen zu Betriebssystemen bezüglich Maven findest du [hier](https://maven.apache.org/enforcer/enforcer-rules/requireOS.html).
 
 Zu guter letzt gibt es noch die Möglichkeit die Aktivierung eines Profiles abhängig von den an Maven übergebenen Parametern zu machen, so würde das untere Profil bei dem Kommandozeilenaufruf:
-`mvn org.company.kitchenware:blender:blend -Denv=production` aktiviert werden.
+
+```console
+$ mvn org.company.kitchenware:blender:blend -Denv=production
+```
+
+aktiviert werden.
+
 ```xml
 <profiles>
   	<profile>
@@ -571,8 +589,8 @@ Hier ersichtlich ist das *Filterdateien* eine weitere Möglichkeit bieten *Prope
 > Ist **kein Include** angegeben werden automatisch **alle Dateien eingeschlossen**. Ist **kein exclude** angegeben wird **keine Datei** ausgeschlossen.
 
 Alternativ wird empfohlen zwei Ressourcen-Verzeichnisse anzulegen:
-- `src/main/resources-filtered`
-- `src/main/resources`
+- `src\main\resources-filtered`
+- `src\main\resources`
 
 anschließend muss nur noch das *filtering* auf erstererem aktiviert werden:
 
@@ -624,7 +642,7 @@ Nachfolgend wird beispielhaft die Verwendung des Javadoc Plugins beschrieben, di
 </reporting>
 ```
 
-Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target/site/index.html` findet ihr die *Javadoc*.
+Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target\site\index.html` findet ihr die *Javadoc*.
 
 Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, anstatt im `reporting`-Element, anzugeben dies wurde jedoch vorerst rückgängig gemacht, ich weiß nicht ob sich dies zukünfigt ändern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
 
@@ -634,7 +652,7 @@ Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb de
 
 ### Projektdokumentation
 Wird manuell erstellt.
-[TODO]: hierfür stehen folgende Tools zur auswahl...
+[TODO]: hierfür stehen folgende Tools zur Auswahl...
 
 ## Nameskonventionen
 - groupId ->
@@ -648,8 +666,8 @@ Einstellungen an Maven können auf drei Ebenen geschehen:
 In diesem Abschnitt wird auf Punkt 2 und 3 eingegangen. Maven unterscheidet zwischen User spezifischen Einstellungen und Globalen, zu finden unter:
 
 ```
-User Einstellungen: ${user.home}/.m/settings.xml
-Globale Einstellungen: ${maven.home}/conf/settings.xml
+User Einstellungen: ${user.home}\.m\settings.xml
+Globale Einstellungen: ${maven.home}\conf\settings.xml
 ```
 
 Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide die gleichen Elemente konfigurieren besitzen die User-Settings eine höhere Priorität und setzen sich damit automatisch durch.
@@ -692,7 +710,8 @@ Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-m
 Mit Maven können natürlich unter Verwendung von Plugins **automatisiert** Tests ausgeführt werden.
 Es werden zwei Arten von Tests hier thematisiert: *Unittests* und *Integrationstests* erstere testen atomare Bestandteile der Software und letzteres testet die Funktion der Komponenten in Kombination.
 
-> Achtung! Maven findet Tests basierend auf ihrem Namen, das bedeutet die Namesgebung ist entscheidend.
+**Achtung:**
+> Maven findet Tests basierend auf ihrem Namen, das bedeutet die Namesgebung ist entscheidend.
 
 Abgesehen davon stellt es ein *Best-Practices* dar seine Testklassen und Methoden semantisch zu benennen. Solltest du dich dennoch gegen eine solche Namesgebung entscheiden gibt es noch die Möglichkeit Klassen über die Konfiguration des jeweiligen Plugins dem Test-Framework bekannt zu machen. Mehr dazu später. Ich empfehle eine folgende Struktur der Verzeichnisse um eine gute Übersicht über das Projekt zu gewährleisten.
 
@@ -763,6 +782,7 @@ $ cd ${project}\target\generated-sources\archetype
 $ mvn install				
 ```
 
-> alternativ *deploy* ansteller von *install* wenn unser Archetype im *remote Katalog* hinterlegt werden soll  
+**alternativ:**
+> *deploy* anstell von *install* wenn unser Archetype im *remote Katalog* hinterlegt werden soll  
 
 Nun kann ein neues Projekt aus unserem Archetype erzeugt werden. Ein Beispiel findest du [hier](custom-archetypes/).
