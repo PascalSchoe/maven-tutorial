@@ -3,7 +3,7 @@
 ## Installation
 
 ### Maven
-Installiere bitte [Maven](https://maven.apache.org/download.cgi).
+Installiere bitte [Maven](https://maven.apache.org/download.cgi).<br/>
 Anschließend folge [diesen Anweisungen](https://maven.apache.org/install.html).
 
 ### Wildfly
@@ -64,7 +64,7 @@ Maven kennt drei *Standard-Lebenszyklen*:
 Für jede Teilaufgabe gibt es genau **ein** *Maven-Plugin*, welches die Abarbeitung übernimmt. Wenn ein *Plugin* mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile` (sofern kein *Default-Goal* definiert ist).
 
 **Kurz gesagt:**
-> *Lebenszyklen* bestehen aus *Phasen*, diese werden von *Plugins*, die wiederum verschiedene *Goals* haben, realisiert.**
+> *Lebenszyklen* bestehen aus *Phasen*, diese werden von *Plugins*, die wiederum verschiedene *Goals* haben, realisiert.
 
 Nachfolgend werden die einzelnen Lebenszyklen im Detail beschrieben.
 
@@ -74,7 +74,7 @@ Nachfolgend eine List der grundlegenden Phasen des *Default-Lifecycle*:
 
 | Phase | Funktion |
 | --- | --- |
-| `validate` | Überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-pom). |
+| `validate` | Überprüft die Gültigkeit der Projektkonfiguration und das [Pom](#project-object-model-pom). |
 | `compile` | Übersetzt den Quellcode des Projektes in das Zielverzeichnis. |
 | `test` | Führt die verfügbaren [Unit-Tests](#testing) unter Verwendung des passenden *Frameworks* aus, zum Beispiel *JUnit*. |
 | `package` |  Erzeugt ein *Java-Archiv*, je nach gewähltem [packaging-typ](#packaging). |
@@ -103,10 +103,10 @@ In diesem *Lebenszyklus* wird die Projektdokumentation von *Maven* erzeugt.
 | `post-site` | Schließt die Erzeugung der Projektdokumentation ab. |
 | `site-deploy` | Stellt die Dokumentation auf einem auf dem im [DistributionManagement](#distributionmanagement) festgelegt Server zu Verfügung. |
 
-## Project Object Model (POM)
-Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche [Abhägingkeiten](#dependencies) es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb eines [Lebenszykluses](#lebenszyklen) gebunden sind.
+## Project Object Model (Pom)
+Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche [Abhägingkeiten](#dependencies) es besitzt. Jedoch hat das *Pom* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb eines [Lebenszykluses](#lebenszyklen) gebunden sind.
 
-Das *POM* ist ein *xml-formatiertes* Dokument. Sein Name **muss** `pom.xml` sein.
+Das *Pom* ist ein *xml-formatiertes* Dokument. Sein Name **muss** `pom.xml` sein.
 Derzeitig wird für das *Element* `<modelVersion></modelVersion>` nur der Wert *4.0.0* unterstützt.
 
 ### Koordinaten
@@ -124,7 +124,7 @@ Beispiel: `<artifactId>blender</artifactId>`
 Versionierung wird in der Form: `major.minor.revision` bevorzugt, es wird jedoch keine feste Form  verlangt.<br/>
 Beispiel: `<version>1.0-SNAPSHOT</version>`
 
-Folgendes Szenario wir deklarieren im *POM* dass wir ein *Plugin* `XY-maven-plugin` nutzen wollen. Nun gibt es drei Arten die *Version* eben dieses *Plugins* anzugeben:
+Folgendes Szenario wir deklarieren im *Pom* dass wir ein *Plugin* `XY-maven-plugin` nutzen wollen. Nun gibt es drei Arten die *Version* eben dieses *Plugins* anzugeben:
 
 1. Keine *Version* angeben. In diesem Fall verwendet *Maven* die aktuellste *Version* des *Plugins* **aus dem lokalen Repository**, nur falls es keinen Eintrag im lokalem Repository gibt wird vom remote Repository geladen.
 2. *Release Version*, zum Beispiel: `<version>1.0</version>`, Maven verwendet die *Release Version* 1.0 des *Plugins*. Es wird zu erst im lokalem Repository gesucht und anschließend, wenn nicht gefunden, wird im *remote Repository* gesucht.
@@ -146,7 +146,7 @@ Ein Beispiel:
   <!-- mehr dependencies -->
 </dependencies>
 ```
-Mit dem Element `<dependencyManagement></dependencyManagement>` lassen sich im *Parent-Projekt* die *Dependencies* zentral konfigurieren. Das erbende *POM* muss dann lediglich nur noch die *Koordinaten* des Plugins aufführen, es kann jedoch auch die Konfiguration des *Parent-Pom* überschreiben.<br/>Hierzu ein Beispiel:
+Mit dem Element `<dependencyManagement></dependencyManagement>` lassen sich im *Parent-Projekt* die *Dependencies* zentral konfigurieren. Das erbende *Pom* muss dann lediglich nur noch die *Koordinaten* des Plugins aufführen, es kann jedoch auch die Konfiguration des *Parent-Pom* überschreiben.<br/>Hierzu ein Beispiel:
 
 **Parent-Pom**
 ```xml
@@ -196,7 +196,7 @@ Folgende Werte sind verfügbar:
 
 | Wert | Wirkung |
 | ---- | ------- |
-|*pom* |Erzeugt kein Archiv. Wird verwendet um ein eigenes [Super POM](#super-pom-offiziell) oder ein [Multi Module Projekt](http://www.codetab.org/apache-maven-tutorial/maven-multi-module-project/) zu erzeugen.|
+|*pom* |Erzeugt kein Archiv. Wird verwendet um ein eigenes [Super Pom](#super-pom-offiziell) oder ein [Multi Module Projekt](http://www.codetab.org/apache-maven-tutorial/maven-multi-module-project/) zu erzeugen.|
 |*jar* |*Defaul-Wert*, erzeugt ein *Java-Archiv*.|
 |*war* |Es wird ein *Web-Application-Archive* erzeugt.|
 |*maven-archetype* |Wird für Projekt-Templates ([Maven Archetypes](#eigene-archetypes-schreiben)) verwendet.|
@@ -246,7 +246,7 @@ Die `updatePolicy` 'always' bewirkt das wirklich bei **jedem** *Build* nach eine
 *Repositories* können im [pom.xml](#project-object-model-pom) (evtl. sogar *Super-Pom*) und/oder in der [settings.xml](#maven-settings) definiert werden.
 
 ### Super Pom ([offiziell](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html))
-Vergleichbar mit `Object` in *Java* erben alle *POM* vom *Super POM*, wenn nicht anders deklariert, somit ergeben sich gewisse *Default-Werte*. Es stellt sicher dass auch bei einem *Minimalem Pom* die Funktionsweise *Mavens* gewährleistet wird.
+Vergleichbar mit `Object` in *Java* erben alle *Pom* vom *Super Pom*, wenn nicht anders deklariert, somit ergeben sich gewisse *Default-Werte*. Es stellt sicher dass auch bei einem *Minimalem Pom* die Funktionsweise *Mavens* gewährleistet wird.
 
 ### Minimales Pom
 Das Minimum, das *Maven* benötigt, sind die [Koordinaten](#koordinaten) des Projekts, die es möglich machen dein Projekt eindeutig zu referenzieren.
@@ -265,8 +265,8 @@ Das Minimum, das *Maven* benötigt, sind die [Koordinaten](#koordinaten) des Pro
 ```
 
 # Notizen für mich
-- 4.4 Buch
 - Aufgaben
+  - 4.4 Buch
   - Profile für development & production(S.153 !)
 
 
@@ -274,14 +274,14 @@ Das Minimum, das *Maven* benötigt, sind die [Koordinaten](#koordinaten) des Pro
 Da *Maven* nichts anderes ist als ein *Framework* das verschiedene *Plugins* bündelt und koordiniert. Kommt dieser Thematik eine große Bedeutung zu. Ein *Plugin* ist für **genau eine** Aufgabe zuständing zum Beispiel das Kompilieren von *Sourcecode* oder das Erzeugen von *Javadoc*, sobald es mehrere Ausführungen einer Aufgabe gibt, zum Beispiel das Kompilieren von Quellcode und Test-Quellcode, werden entsprechend mehrere *goals* von diesem Plugin bereit gestellt.
 
 **Namenskonvention:**
-> ${eigentlicherName}-maven-plugin
+> ${eigentlicherName}-maven-plugin<br/>
 Plugins mit folgendem Namen: maven-${eigentlicherName}-plugin stellen offizielle Plugins dar, daher sollte von solch einer Namensgebung bei der Erstellung eigener Plugins abgesehen werden.
 
 ### Wie werden Plugins ausgeführt?
 Es gibt grundlegend drei Arten wie *Plugins* ausgeführt werden:
 
 - Über die Kommandozeile
-- Getriggert über die POM-Konfiguaration
+- Getriggert über die Pom-Konfiguaration
 - Verknüpft über Annotationen im [Mojo](#plugins-selber-schreiben)
 
 #### Kommandozeile
@@ -299,7 +299,7 @@ $ mvn dosome:now
 
 Parameter werden in der Form `-Dparameter1=wert1 -Dparamter2=wertdrölf` übergeben.
 
-#### Getriggert(POM)
+#### Getriggert(Pom)
 *Plugins* können entweder im Element `reporting` oder im Element `build` deklariert werden.
 
 *Plugins* die in `reporting` deklariert sind werden **automatisch** aufgerufen sobald mittels `mvn site` die [Reports](#reporting) generiert werden. *Plugins* die innerhalb des `build` Elements deklariert wurden werden nur automatisch zusammen mit der entsprechend konfigurierten [Lifecycle-Phase](#lebenszyklen) ausgeführt. Ein Beispiel einer solchen Konfiguration:
