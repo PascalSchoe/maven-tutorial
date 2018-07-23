@@ -100,46 +100,43 @@ In diesem *Lebenszyklus* wird die Projektdokumentation von *Maven* erzeugt.
 | --- | --- |
 | `pre-site` | Vorbereitungen für das Erzeugen der Projektdokumentation. |
 | `site` | Erzeugt die Projektdokumentation als *HTML* durch die Ausführung aller unter `reporting` konfigurierten [Reporting-Plugins](#reporting). |
-
-
+| `post-site` | Schließt die Erzeugung der Projektdokumentation ab. |
+| `site-deploy` | Stellt die Dokumentation auf einem auf dem im [DistributionManagement](#distributionmanagement) festgelegt Server zu Verfügung. |
 
 ## Project Object Model (POM)
-Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche Abhägingkeiten es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb des Lebenszykluses gebunden sind.
+Enthält alle wichtigen Informationen zu dem jeweiligen Projekt so zum Beispiel seine [Koordinaten](#koordinaten) oder welche [Abhägingkeiten](#dependencies) es besitzt. Jedoch hat das *POM* nicht nur beschreibenden Charakter sondern ermöglicht auch das Verwenden von Plugins die an bestimmte *Phasen* innerhalb eines [Lebenszykluses](#lebenszyklen) gebunden sind.
 
-Das POM sollte folgenden
-- Dateienname muss, sofern nicht anders definiert im *settings.xml*, "pom.xml"
-- Syntax dieses Files *XML*
-- `modelVersion` -> derzeitig nur 4.0.0 unterstützt
+Das *POM* ist ein *xml-formatiertes* Dokument. Sein Name **muss** `pom.xml` sein.
+Derzeitig wird für das *Element* `<modelVersion></modelVersion>` nur der Wert *4.0.0* unterstützt.
+
 ### Koordinaten
+Die *Koordinaten* ermöglichen es *Maven* ein Projekt **eindeutig** zu Identifizieren. Sie sind daher unerlässlich.
 
 #### GroupId
-Element: `<groupId></groupId>`.
 Meist in Form einer 'umgekehrten URL' + Namensraum.
-Beispiel: **org.example.kitchenware**
+Beispiel: `<groupId>org.kitchenstuff.tools</groupId>`
 
 #### ArtifactId
-Element: `<artifactId></artifactId>`.
-
 Name der Anwendung.
-Beispiel: **blender**
+Beispiel: `<artifactId>blender</artifactId>`
 
 #### Version
-Element: `<version></version>`.
+Versionierung wird in der Form: `major.minor.revision` bevorzugt, es wird jedoch keine feste Form  verlangt.
+Beispiel: `<version>1.0-SNAPSHOT</version>`
 
-Versionierung wird in der Form: *major.minor.revision* bevorzugt, es wird jedoch keine feste Form  verlangt.
-Beispiel: **1.0-SNAPSHOT**
+Folgendes Szenario wir deklarieren im *POM* dass wir ein *Plugin* `XY-maven-plugin` nutzen wollen. Nun gibt es drei Arten die *Version* eben dieses *Plugins* anzugeben:
 
-Folgendes Szenario wir deklarieren im POM dass wir ein Plugin XY-maven-plugin nutzen wollen. Nun gibt es drei Arten die Version eben dieses Plugins anzugeben:
+1. Keine *Version* angeben. In diesem Fall verwendet *Maven* die aktuellste *Version* des *Plugins* **aus dem lokalen Repository**, nur falls es keinen Eintrag im lokalem Repository gibt wird vom remote Repository geladen.
+2. *Release Version*, zum Beispiel: `<version>1.0</version>`, Maven verwendet die *Release Version* 1.0 des *Plugins*. Es wird zu erst im lokalem Repository gesucht und anschließend, wenn nicht gefunden, wird im *remote Repository* gesucht.
+3. *Snapshot Version*, zum Beispiel: `<version>1.0-SNAPSHOT</version>`, Maven sucht je nach konfiguriertem Intervall([`updatePolicy`](#repositories)) im remote Repository nach neueren Versionen. Der *'SNAPSHOT'-Anteil* der *Version* wird von *Maven* mit einem Zeitstempel ersetzt.
 
-1. Keine Version angeben.Achtung! In diesem Fall verwendet Maven die aktuellste Version des Plugins **aus dem lokalen Repository**, nur falls es keinen Eintrag im lokalem Repository gibt wird vom remote Repository geladen.
-2. Release Version, zum Beispiel: `<version>1.0</version>`, Maven verwendet die Release Version 1.0 des Plugins. Es wird zu erst im lokalem Repository gesucht und anschließend wenn nicht gefunden, wird im remote Repository gesucht.
-3. Snapshot Version, zum Beispiel: `<version>1.0-SNAPSHOT</version>`, Maven sucht je nach konfiguriertem Intervall([`updatePolicy`](#repositories)) im remote Repository nach neueren Versionen. Der 'SNAPSHOT'-Anteil der Version wird von Maven mit einem Zeitstempel ersetzt.
+### Dependencies
+[TODO]
 
-
-#### Properties
+### Properties
 Element: `<properties></properties>`.
 
-#### Packaging
+### Packaging
 Element: `<packaging></packaging>`.
 
 Gehört nur indirekt zu den Koordinaten. Wenn nicht anders angegeben wird `jar` verwendet.
@@ -159,7 +156,7 @@ Folgende Werte sind verfügbar:
 
 Es gibt weitere Werte für `<packaging></packaging>`, die jedoch recht selten Verwendung finden.
 
-#### DistributionManagement
+### DistributionManagement
 Element: `<distributionManagement></distributionManagement>`.
 
 Für das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *wie* das Projekt deployt wird. So gibt es verschiedene Elemente:
