@@ -45,56 +45,56 @@ Hier sind nun folgende Schritte auszuführen:
 2. Suche das *Maven-Tutorial*.
 3. drücke `select all`
 
-Nun sollte Eclipse das [Multi-Modul-Projekt](http://www.codetab.org/apache-maven-tutorial/maven-multi-module-project/) laden `maven-tutorial` ist dabei unser Orientierungspunkt (Parent Pom).
+Nun sollte Eclipse das [Multi-Modul-Projekt](http://www.codetab.org/apache-maven-tutorial/maven-multi-module-project/) laden, `maven-tutorial` ist dabei unser Orientierungspunkt (Parent Pom).
 Du kannst testen ob alles geklappt hat indem du einen Rechtsklick auf `maven-tutorial` tätigst und im Menü `Show in Local Terminal > Terminal` auswählst. Nun gib in die Konsole die sich öffnet folgendes ein: `mvn install` sollte das Build erfolgreich sein hat alles geklappt.
 
 **Beachte:**
-Das *Submodule* `Plugins` ist nur funktionsfähig nachdem du den [Server](#wildfly) gestartet hast.
+> Das *Submodule* `Plugins` ist nur funktionsfähig nachdem du den [Server](#wildfly) gestartet hast.
 
 ## Lebenszyklen
-Ein Grundprinzip Mavens sind die Lebenszyklen in Verbindung mit [Plugins](#plugins).
+Ein Grundprinzip *Mavens* sind die *Lebenszyklen* in Verbindung mit [Plugins](#plugins).
 Beim dem Übersetzen von Quellcode und dem Erzeugen von Anwendungen lassen sich wiederkehrende Aufgaben erkennen.
-Maven verallgemeinert und abstrahiert diese in mehrere Schritte (*Phasen*), die logische Zusammenfassung eines mehrerer Phasen nennt Maven *Lebenszyklus*.
-Maven kennt drei Standard-Lebenszyklen:
+*Maven* verallgemeinert und abstrahiert diese in mehrere Schritte (*Phasen*), die logische Zusammenfassung mehrerer *Phasen* nennt man *Lebenszyklus*.
+Maven kennt drei *Standard-Lebenszyklen*:
 
-- Default/Build
-- Clean
-- Site
+- `Default/Build`
+- `Clean`
+- `Site`
 
-Für jede Teilaufgabe gibt es genau **ein** Maven-Plugin, welches die Abarbeitung vornimmt. Wenn ein Plugin mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile`.
+Für jede Teilaufgabe gibt es genau **ein** *Maven-Plugin*, welches die Abarbeitung übernimmt. Wenn ein *Plugin* mehrere Varianten einer Funktionalität bereitstellt muss zusätzlich das *Goal* angegeben werden, zb. `mvn compiler:compile` vs `mvn compiler:testCompile` (sofern kein *Default-Goal* definiert ist).
 
-> Kurz gesagt: **_Lebenszyklen_ bestehen aus _Phasen_, diese werden von _Plugins_, die wiederum verschiedene _Goals_ haben, realisiert.**
+**Kurz gesagt:**
+> *Lebenszyklen* bestehen aus *Phasen*, diese werden von *Plugins*, die wiederum verschiedene *Goals* haben, realisiert.**
 
 Nachfolgend werden die einzelnen Lebenszyklen im Detail beschrieben.
 
 ### Build Lebenszyklus
 Beinhaltet alle *Phasen* die zum übersetzen von Quellcode und Erzeugen der Anwendung benötigt werden.
-Nachfolgend eine Lister der Grundlegenden Phasen des Default-Lifecycle:
+Nachfolgend eine List der grundlegenden Phasen des *Default-Lifecycle*:
 
 | Phase | Funktion |
 | --- | --- |
-| `validate` | überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-(pom)). |
-| `compile` | übersetzt den Quellcode des Projektes in das Zielverzeichniss. |
-| `test` | Führt die verfügbaren Unit-Test unter Verwendung des passenden Frameworks aus, zum Beispiel _JUnit_. |
-| `package` |  Erzeugt ein Java-Archiv, je nach gewähltem [packaging-typ](#packagingpackaging). |
-| `verify` |  überprüft das erzeugte Archiv und stellt fest, ob es im Maven-Repository abgelegt werden darf. |
-| `install` |  Legt das erzeugte Archiv im lokalen Maven-Repository ab. |
-| `deploy` |  Legt das erzeugte Archiv im remote Maven-Repository, welches dies ist wird mit dem [distributionManagement-Element](#distributionmanagementdistributionmanagement) festgelegt). |
+| `validate` | Überprüft die Gültigkeit der Projektkonfiguration und das [POM](#project-object-model-pom). |
+| `compile` | Übersetzt den Quellcode des Projektes in das Zielverzeichnis. |
+| `test` | Führt die verfügbaren [Unit-Tests](#testing) unter Verwendung des passenden *Frameworks* aus, zum Beispiel *JUnit*. |
+| `package` |  Erzeugt ein *Java-Archiv*, je nach gewähltem [packaging-typ](#packaging). |
+| `verify` |  Überprüft das erzeugte Archiv und stellt fest, ob es im [Maven-Repository](#repositories) abgelegt werden darf. |
+| `install` |  Legt das erzeugte Archiv im lokalen [Maven-Repository](#repositories) ab. |
+| `deploy` |  Legt das erzeugte Archiv im remote [Maven-Repository](#repositories), welches dies ist wird mit dem [distributionManagement-Element](#distributionmanagement) festgelegt). |
 
-Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische Phase ausgeführt, wie zb `install`, so werden alle in der Reihenfolge, des Lebenszykluses, liegenden Phasen ebenfalls ausgeführt.
+Dabei werden alle *Phasen* nach einer festen Reihenfolge abgearbeitet, wird eine spezifische *Phase* ausgeführt, wie zum Beispiel `install`, so werden alle in der Reihenfolge, des Lebenszykluses, davor liegenden *Phasen* ebenfalls ausgeführt.
 
-Beispiel  
 ### Clean Lebenszyklus
-Beinhaltet alle Phansen die beim 'aufräumen' eines Projektes notwendig sind. Die von Maven erzeugten Dateien und Ordner unter dem Verzeichnis `target` werden entfernt.
+Beinhaltet alle *Phansen* die beim 'Aufräumen' eines Projektes notwendig sind. Die von *Maven* erzeugten Dateien und Ordner in dem Verzeichnis `target` werden dabei entfernt.
 
 | Phase | Funktion |
 | --- | --- |
-| `pre-clean` | Vorbereitungen für die *clean*-Phase. |
-| `clean` | Räumt das Projekt auf und entfernt die vom letzten Build erzeugten Dateien und Ordner. |
-| `post-clean` | Abschlussphase des Clean-Lifecycle. |
+| `pre-clean` | Vorbereitungen für die *Clean-Phase*. |
+| `clean` | Räumt das Projekt auf und entfernt die vom letzten *Build* erzeugten Dateien und Ordner. |
+| `post-clean` | Abschlussphase des *Clean-Lifecycle*. |
 
 ### Site Lebenszyklus
-In diesem Lebenszyklus wird die von Maven erzeugte Projektdokumentation erzeugt.
+In diesem *Lebenszyklus* wird die Projektdokumentation von *Maven* erzeugt.
 
 | Phase | Funktion |
 | --- | --- |
@@ -111,15 +111,21 @@ Das POM sollte folgenden
 - Syntax dieses Files *XML*
 - `modelVersion` -> derzeitig nur 4.0.0 unterstützt
 ### Koordinaten
-#### `<groupId></groupId>`
+
+#### GroupId
+Element: `<groupId></groupId>`.
 Meist in Form einer 'umgekehrten URL' + Namensraum.
 Beispiel: **org.example.kitchenware**
 
-#### `<artifactId></artifactId>`
+#### ArtifactId
+Element: `<artifactId></artifactId>`.
+
 Name der Anwendung.
 Beispiel: **blender**
 
-#### `<version></version>`
+#### Version
+Element: `<version></version>`.
+
 Versionierung wird in der Form: *major.minor.revision* bevorzugt, es wird jedoch keine feste Form  verlangt.
 Beispiel: **1.0-SNAPSHOT**
 
@@ -130,10 +136,12 @@ Folgendes Szenario wir deklarieren im POM dass wir ein Plugin XY-maven-plugin nu
 3. Snapshot Version, zum Beispiel: `<version>1.0-SNAPSHOT</version>`, Maven sucht je nach konfiguriertem Intervall([`updatePolicy`](#repositories)) im remote Repository nach neueren Versionen. Der 'SNAPSHOT'-Anteil der Version wird von Maven mit einem Zeitstempel ersetzt.
 
 
-#### `<properties></properties>`
-[TODO]-> ausfüllen....
+#### Properties
+Element: `<properties></properties>`.
 
-#### `<packaging></packaging>`
+#### Packaging
+Element: `<packaging></packaging>`.
+
 Gehört nur indirekt zu den Koordinaten. Wenn nicht anders angegeben wird `jar` verwendet.
 
 Folgende Werte sind verfügbar:
@@ -151,7 +159,9 @@ Folgende Werte sind verfügbar:
 
 Es gibt weitere Werte für `<packaging></packaging>`, die jedoch recht selten Verwendung finden.
 
-#### `<distributionManagement></distributionManagement>`
+#### DistributionManagement
+Element: `<distributionManagement></distributionManagement>`.
+
 Für das Deployment von Artefakten (Projekten), hier wird bestimmt *wohin* und *wie* das Projekt deployt wird. So gibt es verschiedene Elemente:
 
 - `repository`: Deployment von **Releases**   
@@ -211,6 +221,7 @@ Das Minimum, das Maven benötigt, sind die [Koordinaten](#koordinaten) des Proje
 - 4.4 Buch
 - Verlinkung innerhalb des Dokumentes
 - Einheitliches Konzept für Dokumentation
+- Pom neu schreiben
 
 ## Aufgaben
 - Profile für development & production(S.153 !)
