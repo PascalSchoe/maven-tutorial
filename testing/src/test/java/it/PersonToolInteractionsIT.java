@@ -21,30 +21,24 @@ public class PersonToolInteractionsIT {
 	
 	@Test
 	public void toolOwnerShip_personPicksTool_ToolShouldHaveUserReference(){
-		// kein User am Anfang
-		assertEquals(null, t.getUser());
-		assertEquals(false, t.isInUse());
+		// 1. kein User am Anfang
 		
-		t.setUser(p);
-		
-		// inUse sollte true sein
-		assertEquals(true, t.isInUse());
+		// 2 . User setzen 
 
-		// user sollte durch das Werkzeug referenziert werden
-		assertEquals(p, t.getUser());
+		// 3. inUse sollte true sein
+
+		// 4. Referenz auf Person vorhanden? 
 		
 	}
 	
 	@Test
 	public void toolOwnerShip_userReleasesTool_ToolShouldBeNotInUse(){
-		t.setUser(p);
+		// 1. user setzen
 		
-		// inUse sollte true sein
-		assertEquals(true, t.isInUse());
+		// 2. inUse sollte true sein
 		
-		// Werkzeug wird nicht mehr genutzt 
-		t.release();
-		assertEquals(false, t.isInUse());
-		assertEquals(null, t.getUser());
+		// 3. Werkzeug freigeben
+
+		// 4. Werkzeug nicht mehr in Nutzung und es gibt keine Referenz mehr auf den vorherigen Nutzer
 	}
 }

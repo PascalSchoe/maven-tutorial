@@ -23,18 +23,10 @@ public class PersonTests {
 	@CsvSource({"65, Horst, Meier", "29, Pascal, Schönfeld"})
 	public void setter_changingValues_shouldSucceed(int age, String firstname, String lastname){
 		
-		// wurde die Person erfolgreich erstellt?
-		assertEquals(32, p.getAge());
-		assertEquals("Bernd", p.getFirstname());
-		assertEquals("seinNachname", p.getLastname());
+		// 1. alle Felder der Person auf Richtigkeit testen
 		
-		p.setAge(age);
-		p.setFirstname(firstname);
-		p.setLastname(lastname);
+		// 2. Felder neu belegen mit Parametern aus Methode
 
-		// haben die Setter das gemacht was wir wollten?
-		assertEquals(age, p.getAge());
-		assertEquals(firstname, p.getFirstname());
-		assertEquals(lastname, p.getLastname());
+		// 3. Alles richtig gesetzt?
 	}
 }

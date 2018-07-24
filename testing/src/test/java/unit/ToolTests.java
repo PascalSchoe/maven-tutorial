@@ -23,12 +23,10 @@ public class ToolTests {
 	public void inUse_change_shouldSucceed(){
 		
 		
-		// anfaenglich sollte das Werzeug nicht in Benutzung sein
-		assertEquals(false,t.isInUse());
-		
+		// 1. Werkzeug anfaenglich nicht in Nutzung ?
 
-		// hat die Aenderung funktioniert?
-		t.setInUse(true);
-		assertEquals(true, t.isInUse());
+		// 2. InUse aendern
+
+		// 3. InUse nun true?
 	}
 }

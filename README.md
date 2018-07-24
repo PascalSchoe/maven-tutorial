@@ -653,109 +653,6 @@ anschließend muss nur noch das *filtering* auf erstererem aktiviert werden:
 </build>
 ```
 
-## Reporting
-*Maven* erzeugt mit dem [Site-Lifecycle](#site-lebenszyklus) eine Website für das Projekt.
-Die Bestandteile sind:
-
-- Projektinformationen
-- Projektreports
-- Projektdokumentation
-
-### Projektinformationen
-Direkt aus dem [Pom](#project-object-model-pom) generiert.<br/> [Hier](https://maven.apache.org/plugins/maven-site-plugin/project-info.html) findest du eine Liste aller Elemente die dabei in Betracht gezogen werden.
-
-### Projektreports
-Werden durch *Plugins* aus dem *Sourcecode* oder anderen Projektbestandteilen generiert.
-*Maven* erzeugt nur *Reports* wenn im *Pom* in der Sektion `reporting` das entsprechende *Plugin* aufgeführt ist.
-Nachfolgend wird beispielhaft die Verwendung des *Javadoc Plugins* beschrieben, die [anderen Berichte](https://maven.apache.org/plugins/maven-site-plugin/project-reports.html) die Maven erzeugt werden nahezu analog verwendet.
-
-**pom.xml**
-```xml
-<build>
-    <plugins>
-      <plugin>
-        <groupId>org.apachae.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version>
-      </plugin>
-    </plugins>
-</build>
-
-<reporting>
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven-plugins</groupId>
-      <artifactId>maven-javadoc-plugin</artifactId>
-      <version>3.0.1</version>
-    </plugin>
-
-    <!-- eventuell weitere Reporting-Plugins die du nutzen willst -->
-  </plugins>
-</reporting>
-```
-
-Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target\site\index.html` findest du die *Javadoc*.
-
-Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, **anstatt** im `reporting`-Element, anzugeben dies wurde jedoch vorerst rückgängig gemacht, ich weiß nicht ob sich dies zukünfigt ändern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
-
-### Eigene Reports
-Ähnlich zu Plugins werden eigene Reports[so](http://maven.apache.org/shared/maven-reporting-impl/index.html) geschrieben.
-
-### Projektdokumentation
-Die *Projektdokumentation* wird manuell erstllt und kann zum Beispiel Bedienungsanleitungen, *FAQs* oder *Wikis* sonstiges enthalten.
-
-## Maven Settings
-Einstellungen an *Maven* können auf drei Ebenen geschehen:
-
-1. Projekt: pom.xml
-2. User: settings.xml  
-3. Global : settings.xml
-
-In diesem Abschnitt wird auf Punkt 2 und 3 eingegangen. Maven unterscheidet zwischen User spezifischen Einstellungen und Globalen, zu finden unter:
-
-```
-User Einstellungen: ${user.home}\.m\settings.xml
-Globale Einstellungen: ${maven.home}\conf\settings.xml
-```
-
-Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide die gleichen Elemente konfigurieren besitzen die *User-Settings* eine **höhere Priorität** und setzen sich damit automatisch durch.
-
-In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden.
-
-Nachfolgend werde ich auf einige *Elemente* gesondert eingehen.
-
-### Repositories vs pluginRepositories
-In Maven1 wurden *Plugins* und normale *Artefakte* noch in getrennten *Repositories* hinterlegt, dies wurde in *Maven2* geändert. Eine wichtige Unterscheidung zwischen *Plugins*   und *Artefakten* ist dass *Plugins* zur Laufzeit verwendet werden wie zum Beispiel das *Compiler-Plugin* zum Übersetzen von Java-Quellcode, *Artefakte* werden aber wie Bibliotheken verwendet.
-
-Desweiteren bietet die Nutzung beider dieser *Elemente* die Möglichkeit verschiedene Konfigurationen vorzunehmen, zum Beispiel könnte es ja von Nutzen sein die `UpdatePolicy` anzupassen oder keine `SNAPSHOT`-Plugins zuverwenden.
-
-### Mirrors
-Durch das `Repositories`-Element legst du fest von wo *Plugins/Artefakte* geladen werden sollen. Mit dem `mirror`-Element lässt sich anhand der *id* des *Repository* festlegen für welches *Repository* dieser *Mirror* 'greift'. *Maven* bemerkt wenn es versucht etwas aus einem *Repository* herunterzuladen dass ein *Mirror* für dieses *Repository* registriert wurde und verwendet stattdessen die angegeben Adresse. Nachfolgend ein Beispiel:
-
-```xml
-<settings>
-	<!-- other settings-stuff -->
-
-	<mirrors>
-		<mirror>
-			<id>UK</id>
-			<name>UK Central</name>
-			<url>http://uk.maven.org/maven2</url>
-			<mirrorOf>central</mirrorOf> <!-- Id des Repository -->
-		</mirror>
-	</mirrors>
-
-	<!-- somemore settings-stuff -->
-</settings>
-```
-
-diese Konfiguration bewirkt das sollte *Maven* ein etwas aus dem *Central-Repository* laden wollen wird **anstelle** dem in den *USA gehostetem Repository* seine Entsprechung in UK verwendet.
-
-**Achtung:**
-> Es darf immer nur **ein** *Mirror* auf ein *Repository* verweisen!
-
-Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-mirror-settings.html) finden, aus dieser Quelle wurde auch das Beispiel entnommen.
-
 ## Testing
 Mit *Maven* können natürlich unter Verwendung von *Plugins* **automatisiert** Tests ausgeführt werden.
 Es werden zwei Arten von Tests hier thematisiert: *Unittests* und *Integrationstests* erstere testen atomare Bestandteile der Software und letzteres testet die Funktion der Komponenten in Kombination.
@@ -815,6 +712,109 @@ Theoretisch kann das *Surefire-Plugin* auch *Integrationstests* übernehmen, *Fa
 ```console
 $ mvn verify
 ```
+
+## Reporting
+*Maven* erzeugt mit dem [Site-Lifecycle](#site-lebenszyklus) eine Website für das Projekt.
+Die Bestandteile sind:
+
+- Projektinformationen
+- Projektreports
+- Projektdokumentation
+
+### Projektinformationen
+Direkt aus dem [Pom](#project-object-model-pom) generiert.<br/> [Hier](https://maven.apache.org/plugins/maven-site-plugin/project-info.html) findest du eine Liste aller Elemente die dabei in Betracht gezogen werden.
+
+### Projektreports
+Werden durch *Plugins* aus dem *Sourcecode* oder anderen Projektbestandteilen generiert.
+*Maven* erzeugt nur *Reports* wenn im *Pom* in der Sektion `reporting` das entsprechende *Plugin* aufgeführt ist.
+Nachfolgend wird beispielhaft die Verwendung des *Javadoc Plugins* beschrieben, die [anderen Berichte](https://maven.apache.org/plugins/maven-site-plugin/project-reports.html) die Maven erzeugt werden nahezu analog verwendet.
+
+**pom.xml**
+```xml
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.apachae.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+    </plugins>
+</build>
+
+<reporting>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven-plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>3.0.1</version>
+    </plugin>
+
+    <!-- eventuell weitere Reporting-Plugins die du nutzen willst -->
+  </plugins>
+</reporting>
+```
+
+Anschließend mit dem Befehl `mvn site` die Website generiert. Unter `target\site\index.html` findest du die *Javadoc*.
+
+Ursprünglich war mit *Maven3* beabsichtig alle *Reporting-Plugins* innerhalb der Konfigurations-Sektion des *maven-site-plugins*, **anstatt** im `reporting`-Element, anzugeben dies wurde jedoch vorerst rückgängig gemacht, ich weiß nicht ob sich dies zukünfigt ändern wird, [hier](https://maven.apache.org/plugins/maven-site-plugin/maven-3.html#New_Configuration_.28Maven_3_only.2C_no_reports_configuration_inheritance.29) nachzulesen.
+
+### Eigene Reports
+Ähnlich zu Plugins werden eigene Reports [so](http://maven.apache.org/shared/maven-reporting-impl/index.html) geschrieben.
+
+### Projektdokumentation
+Die *Projektdokumentation* wird manuell erstllt und kann zum Beispiel Bedienungsanleitungen, *FAQs* oder *Wikis* sonstiges enthalten.
+
+## Maven Settings
+Einstellungen an *Maven* können auf drei Ebenen geschehen:
+
+1. Projekt: pom.xml
+2. User: settings.xml  
+3. Global : settings.xml
+
+In diesem Abschnitt wird auf Punkt 2 und 3 eingegangen. Maven unterscheidet zwischen User spezifischen Einstellungen und Globalen, zu finden unter:
+
+```
+User Einstellungen: ${user.home}\.m\settings.xml
+Globale Einstellungen: ${maven.home}\conf\settings.xml
+```
+
+Sind beide Dateien vorhanden werden diese zur Laufzeit kombiniert, sollten beide die gleichen Elemente konfigurieren besitzen die *User-Settings* eine **höhere Priorität** und setzen sich damit automatisch durch.
+
+In beiden Dateien können die [gleichen Einstellungen](https://maven.apache.org/ref/current/maven-settings/settings.html) vorgenommen werden. Jedoch bietet es sich an die *Global-Settings* als *firmeneinheitliche Einstellung* zu verwenden.
+
+Nachfolgend werde ich auf einige *Elemente* gesondert eingehen.
+
+### Repositories vs pluginRepositories
+In Maven1 wurden *Plugins* und normale *Artefakte* noch in getrennten *Repositories* hinterlegt, dies wurde in *Maven2* geändert. Eine wichtige Unterscheidung zwischen *Plugins*   und *Artefakten* ist dass *Plugins* zur Laufzeit verwendet werden wie zum Beispiel das *Compiler-Plugin* zum Übersetzen von Java-Quellcode, *Artefakte* werden aber wie Bibliotheken verwendet.
+
+Desweiteren bietet die Nutzung beider dieser *Elemente* die Möglichkeit verschiedene Konfigurationen vorzunehmen, zum Beispiel könnte es ja von Nutzen sein die `UpdatePolicy` anzupassen oder keine `SNAPSHOT`-Plugins zuverwenden.
+
+### Mirrors
+Durch das `Repositories`-Element legst du fest von wo *Plugins/Artefakte* geladen werden sollen. Mit dem `mirror`-Element lässt sich anhand der *id* des *Repository* festlegen für welches *Repository* dieser *Mirror* 'greift'. *Maven* bemerkt wenn es versucht etwas aus einem *Repository* herunterzuladen dass ein *Mirror* für dieses *Repository* registriert wurde und verwendet stattdessen die angegeben Adresse. Nachfolgend ein Beispiel:
+
+```xml
+<settings>
+	<!-- other settings-stuff -->
+
+	<mirrors>
+		<mirror>
+			<id>UK</id>
+			<name>UK Central</name>
+			<url>http://uk.maven.org/maven2</url>
+			<mirrorOf>central</mirrorOf> <!-- Id des Repository -->
+		</mirror>
+	</mirrors>
+
+	<!-- somemore settings-stuff -->
+</settings>
+```
+
+diese Konfiguration bewirkt das sollte *Maven* ein etwas aus dem *Central-Repository* laden wollen wird **anstelle** dem in den *USA gehostetem Repository* seine Entsprechung in UK verwendet.
+
+**Achtung:**
+> Es darf immer nur **ein** *Mirror* auf ein *Repository* verweisen!
+
+Mehr Informationen kannst du [hier](https://maven.apache.org/guides/mini/guide-mirror-settings.html) finden, aus dieser Quelle wurde auch das Beispiel entnommen.
 
 ## Archetypes
 *Archetypes* sind quasi *Projekt-Templates*, so ist es zb. möglich sich schnell von *Maven* die Struktur für ein *deploybares Webprojekt* erzeugen zu lassen wenn der entsprechende *Archetype* vorhanden ist. Somit müssen ähnliche Projekte nicht immer wieder komplett von vorn definiert werden.
