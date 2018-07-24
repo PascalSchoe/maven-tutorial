@@ -30,7 +30,8 @@ Bitte installiere folgende Plugins über den *Marketplace* von Eclipse:
 - Maven Integration for Eclipse
 
 ### Maven-Tutorial Projekt
-In der Kommmandozeile (mit Adminrechten):
+Bitte lade dir, falls noch nicht geschehen [git](https://git-scm.com/downloads) herunter.<br/>
+Anschließend führe in der Kommmandozeile (mit Adminrechten) folgende Befehle aus:
 
 ```console
 $ cd ${wunschVerzeichnis}
