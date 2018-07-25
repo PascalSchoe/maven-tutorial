@@ -305,7 +305,7 @@ Parameter werden in der Form `-Dparameter1=wert1 -Dparamter2=wertdrölf` überge
 			<artifactId>wildfly-maven-plugin</artifactId>
 			<version>1.2.1.FINAL</version>
 			<executions>
-				<executions>
+				<execution>
 					<id>undeploy</id>
 
 					<goals>
@@ -313,7 +313,7 @@ Parameter werden in der Form `-Dparameter1=wert1 -Dparamter2=wertdrölf` überge
 					</goals>
 
 					<phase>clean</phase>
-				</executions>
+				</execution>
 			</executions>
 		</plugin>
 
@@ -337,7 +337,7 @@ Aufbauend auf unserem vorherigen Beispiel hier eine Konfiguration.
 	<artifactId>wildfly-maven-plugin</artifactId>
 	<version>1.2.1.FINAL</version>
 	<executions>
-		<executions>
+		<execution>
 			<id>undeploy</id>
 			<phase>clean</phase>
 
@@ -349,7 +349,7 @@ Aufbauend auf unserem vorherigen Beispiel hier eine Konfiguration.
 			<configuration>
 				<ignoreMissingDeployment>true</ignoreMissingDeployment>
 			</configuration>
-		</executions>
+		</execution>
 	</executions>
 </plugin>
 ```
@@ -383,8 +383,8 @@ Maven *Profile* können an verschieden Stellen definiert werden:
 
 - Pro Projekt: [pom.xml](#project-object-model-pom)
 - [settings.xml](#maven-settings)
-  - Global: `${user.home}\.m2\settings.xml`
-  - Pro User: `${maven.home}\conf\settings.xml`
+  - Pro User: `${user.home}\.m2\settings.xml`
+  - Global: `${maven.home}\conf\settings.xml`
 - in Maven2 zusätzlich in `profiles.xml`, in Maven3 nicht mehr!
 
 Je nach Profilart lassen sich verschiedene *Elemente* manipulieren. Außerdem unterliegen sie verschiedenen *Prioritäten* bei Gleichnamigkeit. Diese Merkmale sollen in folgender Tabelle verdeutlicht werden.
