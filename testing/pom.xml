@@ -68,8 +68,10 @@
 				<version>2.22.0</version>
 				<executions>
 					<execution>
-						<!-- Achtung keine Phase angegeben das die Mojos bereits ein Binding 
-							besitzen. -->
+						<!-- 
+						Achtung keine Phase angegeben da die Mojos bereits eine Bindung an eine Phase
+						durch Annotationen erzeugen. 
+						-->
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>
