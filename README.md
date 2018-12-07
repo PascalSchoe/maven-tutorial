@@ -836,6 +836,6 @@ $ mvn install
 ```
 
 **alternativ:**
-> *deploy* anstalle von *install* wenn unser Archetype im *remote Katalog* hinterlegt werden soll  
+> *deploy* anstelle von *install* wenn unser Archetype im *remote Katalog* hinterlegt werden soll  
 
 Nun kann ein neues Projekt aus unserem Archetype erzeugt werden. Ein Beispiel findest du [hier](custom-archetypes/).
